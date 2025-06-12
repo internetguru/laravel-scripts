@@ -1,0 +1,20 @@
+{
+    "name": "internetguru/laravel-scripts",
+    "description": "Composer scripts for Laravel. Automatically available.",
+    "type": "composer-plugin",
+    "autoload": {
+        "psr-4": {
+            "Internetguru\\LaravelScripts\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "petrzpav",
+            "email": "pavel.petrzela@internetguru.cz"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "class": "Internetguru\\LaravelScripts\\ComposerPlugin"
+    }
+}
