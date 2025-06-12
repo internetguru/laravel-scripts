@@ -16,7 +16,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'docker compose exec laravel /bin/sh'
             ],
             'migrate:fresh' => [
-                'rm database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
+                'rm -f database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
             ],
             'install' => [
                 'docker run --rm -v $(pwd):/app composer install --no-interaction --ignore-platform-reqs --working-dir=/app'
@@ -29,7 +29,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'docker compose exec laravel npm install && npm run dev'
             ],
             'test:php' => [
-                'rm database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
+                'rm -f database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
             ],
             'test:e2e' => [
                 'npx playwright test'

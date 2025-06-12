@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-06-12
+
+### Fixed
+
+- Fix remove sqlite.
+
 ## [0.2.0] - 2025-06-12
 
 _Stable release based on [0.2.0-rc.1]._
@@ -49,6 +55,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.2.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.0...v0.2.1
 [0.2.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.4...v0.2.0
 [0.2.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.1.4
 [0.1.4]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.3...v0.1.4
