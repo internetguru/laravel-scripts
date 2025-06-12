@@ -4,7 +4,7 @@
     "type": "composer-plugin",
     "autoload": {
         "psr-4": {
-            "Internetguru\\LaravelScripts\\": "src/"
+            "InternetGuru\\LaravelScripts\\": "src/"
         }
     },
     "authors": [
@@ -17,6 +17,6 @@
         "composer-plugin-api": "^2.0"
     },
     "extra": {
-        "class": "Internetguru\\LaravelScripts\\ComposerPlugin"
+        "class": "InternetGuru\\LaravelScripts\\ComposerPlugin"
     }
 }

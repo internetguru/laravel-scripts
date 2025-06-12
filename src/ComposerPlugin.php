@@ -1,6 +1,6 @@
 <?php
 
-namespace InternetGuru\ComposerPlugin;
+namespace InternetGuru\LaravelScripts;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
