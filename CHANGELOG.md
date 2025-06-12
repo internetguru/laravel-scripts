@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-06-12
+
+### Fixed
+
+- Fix merging scripts.
+
 ## [0.1.3] - 2025-06-12
 
 ### Fixed
@@ -37,6 +43,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: git diff staging..dev
+[0.1.4]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.3...v0.1.4
 [0.1.3]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.2...v0.1.3
 [0.1.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.1...v0.1.2
 [0.1.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.0...v0.1.1
