@@ -39,7 +39,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             ],
         ];
 
-        $composer->getPackage()->getScripts()->exchangeArray($scripts);
+        $package = $composer->getPackage();
+        $existingScripts = $package->getScripts();
+        $package->setScripts(array_merge($existingScripts, $scripts));
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
