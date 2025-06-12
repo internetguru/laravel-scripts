@@ -32,7 +32,13 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'rm database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
             ],
             'test:e2e' => [
-                'npx playwright test $*'
+                'npx playwright test'
+            ],
+            'test:e2e:ui' => [
+                'npx playwright test --ui'
+            ],
+            'test:e2e:codegen' => [
+                'npx playwright codegen'
             ],
             'test:e2e:report' => [
                 'npx playwright show-report'
