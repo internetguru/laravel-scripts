@@ -9,16 +9,14 @@ use Composer\Plugin\PluginInterface;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $scripts = [
             'bash' => [
                 'docker compose exec laravel /bin/sh'
             ],
             'migrate:fresh' => [
-                'rm database/database.sqlite* \
-                    && echo > database/database.sqlite \
-                    && docker compose exec laravel php artisan migrate:fresh --seed'
+                'rm database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
             ],
             'install' => [
                 'docker run --rm -v $(pwd):/app composer install --no-interaction --ignore-platform-reqs --working-dir=/app'
@@ -28,13 +26,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             ],
             'dev' => [
                 'Composer\\Config::disableProcessTimeout',
-                'docker compose exec laravel npm install \
-                    && npm run dev'
+                'docker compose exec laravel npm install && npm run dev'
             ],
             'test:php' => [
-                'rm database/testing.sqlite* \
-                    && echo > database/testing.sqlite \
-                    && docker compose exec laravel php artisan test'
+                'rm database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
             ],
             'test:e2e' => [
                 'npx playwright test $*'
@@ -45,6 +40,16 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         ];
 
         $composer->getPackage()->getScripts()->exchangeArray($scripts);
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+        // Optional: cleanup or reverse actions
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
+        // Optional: final cleanup
     }
 
     public static function getSubscribedEvents(): array

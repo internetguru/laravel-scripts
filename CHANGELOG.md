@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-06-12
+
+### Fixed
+
+- Implement all composer script abstract methods.
+
 ## [0.1.1] - 2025-06-12
 
 ### Fixed
@@ -25,6 +31,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: git diff staging..dev
+[0.1.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.1...v0.1.2
 [0.1.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.1.0...v0.1.1
 [0.1.0]: git diff v0.0.0..v0.1.0
 [0.1.0-rc.1]: git log v0.0.0
