@@ -13,7 +13,9 @@
             "email": "pavel.petrzela@internetguru.cz"
         }
     ],
-    "require": {},
+    "require": {
+        "composer-plugin-api": "^2.0"
+    },
     "extra": {
         "class": "Internetguru\\LaravelScripts\\ComposerPlugin"
     }
