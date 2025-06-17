@@ -26,7 +26,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             ],
             'dev' => [
                 'Composer\\Config::disableProcessTimeout',
-                'docker compose exec laravel npm install && npm run dev --host "$(hostname -I | awk \'{print $1}\')"'
+                'docker compose exec laravel npm install && npm run dev -- --host "$(hostname -I | awk \'{print $1}\')"'
             ],
             'test:php' => [
                 'rm -f database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
