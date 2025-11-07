@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.5] - 2025-11-07
+
+### Fixed
+
+- Disable composer timeout.
+
 ## [0.2.4] - 2025-11-07
 
 ### Fixed
@@ -73,6 +79,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.2.5]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.4...v0.2.5
 [0.2.4]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.3...v0.2.4
 [0.2.3]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.2...v0.2.3
 [0.2.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.1...v0.2.2
