@@ -13,6 +13,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $scripts = [
             'bash' => [
+                'Composer\\Config::disableProcessTimeout',
                 'docker compose exec laravel /bin/sh'
             ],
             'migrate:fresh' => [
@@ -22,6 +23,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'docker run --rm -v $(pwd):/app composer install --no-interaction --ignore-platform-reqs --working-dir=/app'
             ],
             'artisan' => [
+                'Composer\\Config::disableProcessTimeout',
                 'docker compose exec laravel php artisan $*'
             ],
             'dev' => [
