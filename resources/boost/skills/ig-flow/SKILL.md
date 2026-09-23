@@ -60,18 +60,26 @@ Once the commit is made, ask the user what comes next, and say exactly what each
 - **Release**, per branch:
   - feature → `dev`: `flow --yes`
   - `dev` → a release candidate on `staging`: `flow --yes`
-  - `staging` → production, tagged `vX.Y.Z`: `flow --yes` on `staging`
+  - `staging` → production, tagged `vX.Y.Z`: `flow --yes --conform` on `staging` (see below)
   - hotfix → a production patch: `flow --yes` on the hotfix branch
   - Follow a release with `flow --push`, if the user wants it pushed.
 
-Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Always pass `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--conform` or `--force` unless the user asks.
+Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Always pass `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
+
+### Work committed on `staging`
+
+Commits made directly on `staging` are not in `dev` yet, and until they are, every Flow command stops with exit 3 ("Branch 'staging' is not merged into 'dev'", or "Missing or invalid version file on staging" when `staging` holds no release candidate yet). On `staging`, `--conform` is the expected way through:
+
+1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`.
+2. Write the entries for everything on the candidate under that heading and commit them. A candidate is never released with an empty section.
+3. Release `staging` to production with `flow --yes --conform`.
 
 ## Changelog entries per branch
 
 Where an entry goes depends on the branch you are on (`git branch --show-current`):
 
 - **`dev`**: under `## [Unreleased]`, in the same commit as the change.
-- **`staging`**: under the topmost heading, the current release candidate (e.g. `## [2.11.0-rc.5]`). Do not create an `[Unreleased]` section there.
+- **`staging`**: under the topmost heading, the current release candidate (e.g. `## [2.11.0-rc.5]`). Do not create an `[Unreleased]` section there. If the topmost heading is a released version, `staging` holds no candidate yet: never write under it, run `flow --yes --conform --pull` first (see "Work committed on `staging`") and write under the new `-rc.1` heading.
 - **Feature branch**: do not edit `CHANGELOG.md`. Flow asks for the entries when it merges the feature into `dev`, and adds a generic "New feature '…'" line if none is given. When the user approves the release, pipe the entries in, one `Keyword: message` per line and an empty line to finish:
 
   ```bash
