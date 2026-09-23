@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Internet Guru guidelines and skills for Laravel Boost: `php artisan boost:update` adds them to the AI agent instructions of every application using this package.
+
 ## [0.2.7] - 2026-02-25
 
 ### Fixed
