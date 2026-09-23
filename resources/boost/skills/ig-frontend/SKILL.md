@@ -45,6 +45,13 @@ The stack is Blade and Livewire 4 on Bootstrap 5, compiled by Vite, with Alpine.
   - `specific/`: one screen or feature
   - A new partial must be imported in `app.scss`.
 - **Variables:** use Bootstrap and package variables (`$spacer`, `$card-max-width`, theme colours) instead of hardcoded values. Add a new value to `abstract/_variables.scss`.
+- **Units:** never `px`, in Sass or in Blade. Use relative units so the layout follows the user's font size and zoom:
+  - `rem` for spacing, sizes and font sizes; `em` for a size that should follow the element's own font, such as an icon or a button's padding
+  - `%`, `vw`, `vh`, `dvh`, `svh` for fractions of the parent or the viewport, `ch` for text widths
+  - borders: the keywords `thin`, `medium`, `thick`, or `$border-width`
+  - media queries in `em` (the `media-N` mixins already are)
+  - `0` without a unit
+  - `px` stays only where no relative unit can express the value, e.g. a third-party widget that requires it.
 - **Grid:** `ig::common` disables Bootstrap's grid classes (`$enable-grid-classes: false`). `row`/`col-md-6` markup does nothing unless the app defines it; layouts use the app's own `.row` or `.col` rules and the `flex`/`flexNowrap` mixins. Bootstrap's other utility classes (spacing, display, text) are available and preferred over new CSS.
 - **Breakpoints:** mobile-first, with the `ig::common` mixins `@include media-1` … `media-4` (min-width 30, 40, 60 and 80em). Avoid raw `@media` and Bootstrap's `media-breakpoint-*` mixins.
 - **Imports:** keep `@import`, because the `ig::` package partials depend on it. Do not convert files to `@use`.
