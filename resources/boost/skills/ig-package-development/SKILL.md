@@ -30,7 +30,7 @@ Check which packages are mounted in the running container:
 docker inspect -f '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{println}}{{end}}' $(docker compose ps -q laravel)
 ```
 
-- **Mounted:** the change is live in the container. `composer test:php`, `composer artisan` and the browser run it. Tests run natively on the host still use the released code in the host's `vendor/`.
+- **Mounted:** the change is live in the container. `composer run test:php`, `composer run artisan` and the browser run it. Tests run natively on the host still use the released code in the host's `vendor/`.
 - **Not mounted:** the application runs the released version, so the change is **not** visible in it. Say so rather than implying the application already has the fix. Tell the user which line to uncomment in their `docker-compose.vendor.yml` and that the stack needs redeploying with `-f`. Do not edit that file or redeploy yourself.
 
 Either way, the change reaches other environments only after a maintainer releases the package with Flow (`dev` → `staging` → `main`) and the application's dependency is updated. If the application needs a stopgap before then, propose one explicitly, such as a view override under `resources/views/vendor/<namespace>`, and let the user decide.

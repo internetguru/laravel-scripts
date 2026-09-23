@@ -41,6 +41,8 @@ Never do any of these by hand. Flow does them, and doing them yourself breaks it
 
 First run `flow --pull` in the repository. Coworkers push to the same branches, and it brings every local branch up to date with origin (fast-forward only) before anything changes. It needs a clean working tree. If there are uncommitted changes (exit 5), ask the user how to handle them instead of stashing or discarding. A failed fast-forward means the branches have diverged: report it and don't merge on your own. When working across an application and its packages, pull each repository you are about to change.
 
+`flow --pull` checks out every remote branch in turn. If an old branch still tracks a file that docker-ansible now generates (`docker-compose.yml`, `Dockerfile`), Git replaces the ignored local copy with that branch's version and then deletes it when switching back. After pulling an application, check that `Dockerfile` and `docker-compose*.yml` still exist. If one is gone, tell the user the local stack needs redeploying with docker-ansible (`./run.sh deploy <group> <domain>`, plus `-f …/docker-compose.vendor.yml` if they test packages); don't recreate it by hand.
+
 Then check the current branch (`git branch --show-current`), and ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).

@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-09-23
+
+### Fixed
+
+- Guidelines call the scripts as `composer run test:php` and `composer run artisan -- …`, since Composer does not accept the bare `composer test:php` form for plugin scripts, and warn that `flow --pull` can delete a generated `docker-compose.yml`.
+
 ## [0.3.1] - 2026-09-23
 
 ### Changed
@@ -111,6 +117,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.3.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.1...v0.3.2
 [0.3.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.0...v0.3.1
 [0.3.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.7...v0.3.0
 [0.3.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.2.7
