@@ -31,7 +31,12 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'docker compose exec laravel npm install && docker compose exec laravel npm run dev -- --host=0.0.0.0'
             ],
             'test:php' => [
-                'rm -f database/testing.sqlite* && echo > database/testing.sqlite && docker compose exec laravel php artisan test'
+                'Composer\\Config::disableProcessTimeout',
+                'rm -f database/testing.sqlite* && echo > database/testing.sqlite'
+                    . ' && docker compose exec -e APP_ENV=testing -e DB_CONNECTION=sqlite -e DB_DATABASE=/app/database/testing.sqlite laravel php artisan migrate --force --quiet'
+                    . ' && p="" && if [ -d vendor/brianium/paratest ]; then n=$(nproc) && p="--parallel --processes=$n"'
+                    . ' && for i in $(seq 1 $n); do cp database/testing.sqlite database/testing.sqlite_test_$i; done; fi'
+                    . ' && docker compose exec laravel php artisan test $p'
             ],
             'test:e2e' => [
                 'npx playwright test'
