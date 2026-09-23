@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.5] - 2026-09-23
+
+### Changed
+
+- Frontend rules keep text readable: no text below 1rem, WCAG AA contrast, and no faded or light text to mark something as secondary.
+
 ## [0.3.4] - 2026-09-23
 
 ### Changed
@@ -127,6 +133,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[0.3.5]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.4...v0.3.5
 [0.3.4]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.3...v0.3.4
 [0.3.3]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.2...v0.3.3
 [0.3.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.1...v0.3.2
