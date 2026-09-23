@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.3.4] - 2026-09-23
+
+### Changed
+
+- Frontend rules ask for relative units (rem, em, %, vw/vh, thin borders) instead of px.
+
 ## [0.3.3] - 2026-09-23
 
 ### Changed
@@ -121,6 +127,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[0.3.4]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.3...v0.3.4
 [0.3.3]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.2...v0.3.3
 [0.3.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.1...v0.3.2
 [0.3.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.0...v0.3.1
