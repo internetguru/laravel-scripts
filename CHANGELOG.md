@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Guidelines say CI runs the full suite only on the production branch, so elsewhere the developer runs it.
 
+## [0.3.3] - 2026-09-23
+
+### Changed
+
+- Guidelines say CI runs the full suite only on the production branch.
+- Agents release work committed on staging with flow --conform, after filling in the release candidate changelog.
+
 ## [0.3.2] - 2026-09-23
 
 ### Fixed
@@ -121,6 +128,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.3.3]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.2...v0.3.3
 [0.3.2]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.1...v0.3.2
 [0.3.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.0...v0.3.1
 [0.3.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.2.7...v0.3.0
