@@ -12,12 +12,13 @@ Every Internet Guru application and package keeps a `CHANGELOG.md` in the [Keep 
 
 - The section depends on the branch (activate `ig-flow` for details):
   - `dev`: under `## [Unreleased]`
-  - `staging`: under the topmost heading, the current release candidate
+  - `staging`: under the topmost heading, the current release candidate. If that heading is a released version, Flow has to create the candidate first (see `ig-flow`)
   - feature and hotfix branches: don't edit the file. Flow asks for the entries at release; pipe them in as `Keyword: message` lines (see `ig-flow`)
 - Make the edit in the same commit as the change it describes.
 - Group entries under `### Added`, `### Changed`, `### Deprecated`, `### Removed`, `### Fixed` or `### Security`, in that order. Create a heading only when it has an entry.
 - Never add a version heading, a date, a `_Stable release based on …_` note or a compare link, and never touch `VERSION`. Flow writes those when it releases.
 - Change nothing in released sections: they are history.
+- A release never goes out with an empty section. If nothing a user sees changed, describe the tooling, CI or dependency changes it carries.
 
 ## How to write an entry
 
