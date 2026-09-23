@@ -1,6 +1,6 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to offer a feature or hotfix branch), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
+description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 metadata:
   author: internetguru
 ---
@@ -39,7 +39,9 @@ Never do any of these by hand. Flow does them, and doing them yourself breaks it
 
 ## Before starting a task
 
-Check the current branch (`git branch --show-current`), then ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
+First run `flow --pull` in the repository. Coworkers push to the same branches, and it brings every local branch up to date with origin (fast-forward only) before anything changes. It needs a clean working tree. If there are uncommitted changes (exit 5), ask the user how to handle them instead of stashing or discarding. A failed fast-forward means the branches have diverged: report it and don't merge on your own. When working across an application and its packages, pull each repository you are about to change.
+
+Then check the current branch (`git branch --show-current`), and ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
 - **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major), or fix it on `staging` if the fix belongs in the current release candidate.
