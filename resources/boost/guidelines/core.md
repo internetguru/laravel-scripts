@@ -36,7 +36,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Frontend
 
-- Reuse the `x-ig::` package components, use Bootstrap utilities and Sass partials instead of inline `style`, keep behaviour in global Alpine components rather than `<script>` tags, and register every Font Awesome icon in `resources/js/fontawesome-init.js`. Activate `ig-frontend` before touching `resources/views`, `resources/sass` or `resources/js`.
+- Reuse the `x-ig::` package components, use Bootstrap utilities and Sass partials instead of inline `style`, size things in relative units (`rem`, `em`, `%`, `vw`/`vh`, `thin` borders) and never `px`, keep behaviour in global Alpine components rather than `<script>` tags, and register every Font Awesome icon in `resources/js/fontawesome-init.js`. Activate `ig-frontend` before touching `resources/views`, `resources/sass` or `resources/js`.
 
 ## Changelog
 
