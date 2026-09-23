@@ -57,4 +57,4 @@ The stack is Blade and Livewire 4 on Bootstrap 5, compiled by Vite, with Alpine.
 
 ## Building
 
-Never run `npm run build` or `npm run dev`. If a change does not appear in the browser, tell the user it needs a Vite rebuild (`composer dev`).
+Never run `npm run build` or `npm run dev`. If a change does not appear in the browser, tell the user it needs a Vite rebuild (`composer run dev`).

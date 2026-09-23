@@ -17,16 +17,16 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 
 ## Composer scripts
 
-`internetguru/laravel-scripts` adds these to every application. They run inside the `laravel` container:
+`internetguru/laravel-scripts` adds these to every application. They run inside the `laravel` container. Call them with `composer run <script>`, because the bare `composer test:php` form is not available for plugin scripts, and pass arguments after `--`, e.g. `composer run artisan -- migrate:status`. They need the stack's `docker-compose.yml`; if docker compose reports "no configuration file provided", the file is missing and the stack needs redeploying with docker-ansible.
 
 | Command | What it does |
 | --- | --- |
-| `composer artisan <command>` | `php artisan <command>` in the container |
-| `composer test:php` | The full suite: recreate and migrate `database/testing.sqlite`, then `php artisan test`, in parallel (one process per CPU) when Paratest is installed. Extra arguments go after `--`, e.g. `composer test:php -- --compact` |
-| `composer migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
-| `composer bash` | Shell in the container |
-| `composer dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |
-| `composer test:e2e`, `test:e2e:ui`, `test:e2e:report` | Playwright, on the host |
+| `composer run artisan <command>` | `php artisan <command>` in the container |
+| `composer run test:php` | The full suite: recreate and migrate `database/testing.sqlite`, then `php artisan test`, in parallel (one process per CPU) when Paratest is installed. Extra arguments go after `--`, e.g. `composer run test:php -- --compact` |
+| `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
+| `composer run bash` | Shell in the container |
+| `composer run dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |
+| `composer run test:e2e`, `test:e2e:ui`, `test:e2e:report` | Playwright, on the host |
 
 ## Running tests without Docker
 
