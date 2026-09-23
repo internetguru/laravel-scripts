@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Internet Guru guidelines and skills for Laravel Boost: `php artisan boost:update` adds them to the AI agent instructions of every application using this package.
 
+### Changed
+
+- `composer test:php` migrates the test database once and runs the suite in parallel when Paratest is installed, without a timeout.
+
 ## [0.2.7] - 2026-02-25
 
 ### Fixed
