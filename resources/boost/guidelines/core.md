@@ -25,7 +25,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 - **While working:** run only the test file or `--filter` that covers the change, e.g. `composer run artisan -- test --compact --colors=never tests/Feature/OrderDetailTest.php`. That takes seconds. Never run the full suite mid-task, and don't rerun tests after every edit.
 - **Before a commit:** add or update the tests for the change in the same commit, then run the affected test files once, e.g. every `tests/Feature/Order*Test.php` after touching orders.
-- **Full suite:** CI runs it on push, or the developer runs `composer run test:php`. That command migrates the test database once and runs in parallel when Paratest is installed. If the user asks for the full suite, run `composer run test:php -- --compact --colors=never` in the background and report only the summary and the failures.
+- **Full suite:** CI runs it only on the production branch (`main` or `master`), so on other branches the developer runs `composer run test:php`. That command migrates the test database once and runs in parallel when Paratest is installed. If the user asks for the full suite, run `composer run test:php -- --compact --colors=never` in the background and report only the summary and the failures.
 - **Output:** always pass `--compact --colors=never`. Add `--bail` (Pest) or `--stop-on-failure` (PHPUnit) when chasing a failure. Read failures from the end of the output, not the whole log.
 - **Many identical failures point to the setup, not the code.** One cause failing dozens of tests, such as "Vite manifest not found" or a missing database, is a harness problem. Report it instead of debugging each test.
 
