@@ -57,7 +57,7 @@ Skip the question when the user has already said where to work, or when the task
 Once the commit is made, ask the user what comes next, and say exactly what each option runs:
 
 - **Nothing yet:** leave it local.
-- **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`.
+- **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`. On `staging`, first merge it into `dev` with `flow --yes --conform --pull`, then push both with `flow --push` (see "Work committed on `staging`"); never push `staging` alone.
 - **Release**, per branch:
   - feature → `dev`: `flow --yes`
   - `dev` → a release candidate on `staging`: `flow --yes`
@@ -71,7 +71,7 @@ Run a Flow command only after the user says yes to that specific step. Approval 
 
 Commits made directly on `staging` are not in `dev` yet, and until they are, every Flow command stops with exit 3 ("Branch 'staging' is not merged into 'dev'", or "Missing or invalid version file on staging" when `staging` holds no release candidate yet). On `staging`, `--conform` is the expected way through:
 
-1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`. To only push, follow it with `flow --push` and stop here.
+1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`, every time, also when only pushing: a push that leaves `staging` unmerged leaves `dev` behind and blocks the next Flow command. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`. To only push, follow it with `flow --push` and stop here.
 2. Write the entries for everything on the candidate under that heading and commit them. A candidate is never released with an empty section.
 3. Release `staging` to production with `flow --yes --conform`.
 
