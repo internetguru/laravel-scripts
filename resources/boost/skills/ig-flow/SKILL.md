@@ -46,7 +46,8 @@ First run `flow --pull` in the repository. Coworkers push to the same branches, 
 Then check the current branch (`git branch --show-current`), and ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
-- **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major), or fix it on `staging` if the fix belongs in the current release candidate.
+- **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major).
+- **A fix for the release candidate on `staging`** (it fails in testing or does not deploy): commit it directly on `staging`, see "Work committed on `staging`". Never commit it on `dev` and run `flow` there for a new candidate: that adds an `-rc.N` with nothing but the fix, and ships whatever else waits on `dev` along with it.
 - **Already on a feature or hotfix branch:** continue there, unless the task is unrelated.
 
 Skip the question when the user has already said where to work, or when the task changes no files.
@@ -70,7 +71,7 @@ Run a Flow command only after the user says yes to that specific step. Approval 
 
 Commits made directly on `staging` are not in `dev` yet, and until they are, every Flow command stops with exit 3 ("Branch 'staging' is not merged into 'dev'", or "Missing or invalid version file on staging" when `staging` holds no release candidate yet). On `staging`, `--conform` is the expected way through:
 
-1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`.
+1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`. To only push, follow it with `flow --push` and stop here.
 2. Write the entries for everything on the candidate under that heading and commit them. A candidate is never released with an empty section.
 3. Release `staging` to production with `flow --yes --conform`.
 
