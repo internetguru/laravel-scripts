@@ -40,7 +40,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                     . ' && p="" && if [ -d vendor/brianium/paratest ]; then n=$(nproc) && p="--parallel --processes=$n"'
                     . ' && for i in $(seq 1 $n); do cp database/testing.sqlite database/testing.sqlite_test_$i; done; fi'
                     . ' && ' . self::LINK_CHROMIUM
-                    . ' && docker compose exec laravel php artisan test $p'
+                    // Browser tests next to busy CPU-bound tests starve their Chromium and time out, so they run after
+                    . ' && docker compose exec laravel php artisan test $p --exclude-testsuite=Browser @additional_args'
+                    . ' && if [ -d tests/Browser ]; then docker compose exec laravel php artisan test $p --testsuite=Browser @additional_args; fi'
             ],
             'test:browser' => [
                 'Composer\\Config::disableProcessTimeout',

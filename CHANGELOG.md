@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-04
+
+### Fixed
+
+- `test:php` runs the browser tests after the rest of the suite, so they no longer time out next to CPU-bound tests.
+
 ## [0.4.0] - 2026-10-04
 
 _Stable release based on [0.4.0-rc.1]._
@@ -163,6 +169,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.4.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.4.0...v0.4.1
 [0.4.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.7...v0.4.0
 [0.4.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.3.7
 [0.3.7]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.6...v0.3.7
