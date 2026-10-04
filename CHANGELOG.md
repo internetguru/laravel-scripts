@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `composer run test:browser` runs the Pest browser tests, and `test:php` prepares Chromium for them in the container.
+- Testing rules give behaviour that runs in the browser a Pest browser test in `tests/Browser`; the local environment skill covers running and setting them up.
+
+### Removed
+
+- **Breaking:** The Playwright scripts `test:e2e`, `test:e2e:ui`, `test:e2e:codegen` and `test:e2e:report`; port the specs to Pest browser tests.
+
 ## [0.3.7] - 2026-09-28
 
 ### Changed

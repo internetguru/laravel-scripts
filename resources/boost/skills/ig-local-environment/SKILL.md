@@ -1,6 +1,6 @@
 ---
 name: ig-local-environment
-description: "Run, test and debug an Internet Guru Laravel application locally: the docker-ansible Docker stack, the laravel-scripts composer commands, and running tests or Artisan outside Docker. Activate when tests, Artisan, migrations or the dev server fail to start, when the database path or port 80 is in the way, or when the user asks how to run the application."
+description: "Run, test and debug an Internet Guru Laravel application locally: the docker-ansible Docker stack, the laravel-scripts composer commands, and running tests or Artisan outside Docker. Activate when tests, browser tests, Artisan, migrations or the dev server fail to start, when the database path or port 80 is in the way, or when the user asks how to run the application."
 metadata:
   author: internetguru
 ---
@@ -26,7 +26,21 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 | `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
 | `composer run bash` | Shell in the container |
 | `composer run dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |
-| `composer run test:e2e`, `test:e2e:ui`, `test:e2e:report` | Playwright, on the host |
+| `composer run test:browser` | Only the Pest browser tests (`tests/Browser`), on a freshly migrated test database. Extra arguments go after `--`, e.g. `composer run test:browser -- --compact tests/Browser/OrderCreateTest.php` |
+
+## Browser tests
+
+Pest browser tests (`pestphp/pest-plugin-browser`) run inside the `laravel` container: the test starts the application in its own process and drives a headless Chromium through Playwright. The test shares the database transaction, factories, fakes and `actingAs()` of any feature test.
+
+- **The image.** docker-ansible builds the localhost image with the `sockets` extension, Alpine's Chromium and `PLAYWRIGHT_BROWSERS_PATH`. Playwright ships no Alpine browsers, so `playwright-chromium-link` points the paths of the project's Playwright version at that Chromium. The container runs it on start and `test:php` / `test:browser` run it before the tests. If tests fail with a missing `sockets` extension or "Executable doesn't exist", the stack predates this: ask the user to redeploy it. Run `playwright-chromium-link` in the container after `npm` changes the Playwright version.
+- **Assets.** Pages load the JavaScript and CSS from the developer's Vite dev server (`public/hot`), so frontend edits are tested without a build. If a test times out on the first `visit()`, or the page has no styles and Livewire does not react, Vite is not running or the container cannot reach it. Check with `docker compose exec laravel wget -qO- -T 3 "$(cat public/hot)/@vite/client"`. A host firewall (UFW) blocks containers by default; the user allows them once with `sudo ufw allow from 172.16.0.0/12 to any port <vite port> proto tcp`. Never build assets to work around it.
+- **Setting up a project** (with the user's approval, it adds dependencies):
+  - `composer require --dev pestphp/pest-plugin-browser`; on the host add `--ignore-platform-req=ext-sockets`, the extension lives in the container.
+  - `npm install -D playwright@<version>`, the exact version the plugin requires (its error names it). Remove `@playwright/test`, `playwright.config.ts` and `tests/e2e` once their specs are ported to Pest.
+  - A `Browser` testsuite for `./tests/Browser` in `phpunit.xml`, and `uses(TestCase::class)->in('Browser')` in `tests/Pest.php`, adding `->beforeEach(fn () => $this->withVite())` when the `TestCase` calls `withoutVite()`. Keep the `TestCase`'s `DatabaseTransactions`: the in-process server shares its connection.
+  - `/tests/Browser/Screenshots` in `.gitignore`.
+  - In CI: the `sockets` PHP extension, `npm run build`, then `npx playwright install --with-deps chromium` before the tests.
+- **Debugging.** A failure saves a screenshot to `tests/Browser/Screenshots` (ignored by git); read it. `->debug()` and `--headed` need a display, which the container does not have.
 
 ## Running tests without Docker
 
