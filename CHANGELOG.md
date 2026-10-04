@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-- **Breaking:** The Playwright scripts `test:e2e`, `test:e2e:ui`, `test:e2e:codegen` and `test:e2e:report`; port the specs to Pest browser tests.
+- The Playwright scripts `test:e2e`, `test:e2e:ui`, `test:e2e:codegen` and `test:e2e:report`; port the specs to Pest browser tests.
 
 ## [0.3.7] - 2026-09-28
 
