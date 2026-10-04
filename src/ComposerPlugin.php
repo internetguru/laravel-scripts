@@ -9,6 +9,9 @@ use Composer\Plugin\PluginInterface;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
+    // Playwright's Chromium paths follow its version, so they are linked again before each run (docker-ansible image)
+    private const LINK_CHROMIUM = 'docker compose exec laravel sh -c "command -v playwright-chromium-link >/dev/null && playwright-chromium-link || true"';
+
     public function activate(Composer $composer, IOInterface $io): void
     {
         $scripts = [
@@ -36,19 +39,15 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                     . ' && docker compose exec -e APP_ENV=testing -e DB_CONNECTION=sqlite -e DB_DATABASE=/app/database/testing.sqlite laravel php artisan migrate --force --quiet'
                     . ' && p="" && if [ -d vendor/brianium/paratest ]; then n=$(nproc) && p="--parallel --processes=$n"'
                     . ' && for i in $(seq 1 $n); do cp database/testing.sqlite database/testing.sqlite_test_$i; done; fi'
+                    . ' && ' . self::LINK_CHROMIUM
                     . ' && docker compose exec laravel php artisan test $p'
             ],
-            'test:e2e' => [
-                'npx playwright test'
-            ],
-            'test:e2e:ui' => [
-                'npx playwright test --ui'
-            ],
-            'test:e2e:codegen' => [
-                'npx playwright codegen'
-            ],
-            'test:e2e:report' => [
-                'npx playwright show-report'
+            'test:browser' => [
+                'Composer\\Config::disableProcessTimeout',
+                'rm -f database/testing.sqlite* && echo > database/testing.sqlite'
+                    . ' && docker compose exec -e APP_ENV=testing -e DB_CONNECTION=sqlite -e DB_DATABASE=/app/database/testing.sqlite laravel php artisan migrate --force --quiet'
+                    . ' && ' . self::LINK_CHROMIUM
+                    . ' && docker compose exec laravel php artisan test --testsuite=Browser'
             ],
         ];
 
