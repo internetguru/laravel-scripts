@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-10-06
+
+### Fixed
+
+- The Boost guideline lists the `test:browser` composer script instead of the removed `test:e2e`.
+
 ## [0.4.1] - 2026-10-04
 
 ### Fixed
@@ -169,6 +175,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.4.2]: https://github.com/internetguru/laravel-scripts/compare/v0.4.1...v0.4.2
 [0.4.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.4.0...v0.4.1
 [0.4.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.7...v0.4.0
 [0.4.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.3.7

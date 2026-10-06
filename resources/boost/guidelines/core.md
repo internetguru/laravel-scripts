@@ -53,4 +53,4 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Local environment
 
-- The application runs in Docker (service `laravel`, code mounted at `/app`), deployed locally by docker-ansible. `internetguru/laravel-scripts` adds composer scripts that run inside it: `composer run artisan <command>`, `composer run test:php`, `composer run bash`, `composer run migrate:fresh`, `composer run test:e2e`. Activate `ig-local-environment` when tests or Artisan fail to run.
+- The application runs in Docker (service `laravel`, code mounted at `/app`), deployed locally by docker-ansible. `internetguru/laravel-scripts` adds composer scripts that run inside it: `composer run artisan <command>`, `composer run test:php`, `composer run test:browser`, `composer run bash`, `composer run migrate:fresh`. Activate `ig-local-environment` when tests or Artisan fail to run.
