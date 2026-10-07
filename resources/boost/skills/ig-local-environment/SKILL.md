@@ -22,7 +22,7 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 | Command | What it does |
 | --- | --- |
 | `composer run artisan <command>` | `php artisan <command>` in the container |
-| `composer run test:php` | The full suite: recreate and migrate `database/testing.sqlite`, then `php artisan test`, in parallel (one process per CPU) when Paratest is installed. The `Browser` suite runs after the rest, because Chromium starves next to busy CPU-bound tests. Extra arguments go after `--`, e.g. `composer run test:php -- --compact` |
+| `composer run test:php` | The full suite: recreate and migrate `database/testing.sqlite`, then `php artisan test`, in parallel (one process per CPU) when Paratest is installed. The `Browser` suite runs after the rest, because Chromium starves next to busy CPU-bound tests, and in at most four processes, because more Chromiums at once stop answering. Extra arguments go after `--`, e.g. `composer run test:php -- --compact` |
 | `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
 | `composer run bash` | Shell in the container |
 | `composer run dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |

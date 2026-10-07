@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-10-07
+
+### Fixed
+
+- `test:php` runs the browser tests in at most four parallel processes, since more Chromiums at once stop answering and hang the suite.
+
 ## [0.4.2] - 2026-10-06
 
 ### Fixed
@@ -175,6 +181,7 @@ _Stable release based on [0.1.0-rc.1]._
 - New changelog file.
 
 [Unreleased]: https://https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.4.3]: https://github.com/internetguru/laravel-scripts/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/internetguru/laravel-scripts/compare/v0.4.1...v0.4.2
 [0.4.1]: https://https://github.com/internetguru/laravel-scripts/compare/v0.4.0...v0.4.1
 [0.4.0]: https://https://github.com/internetguru/laravel-scripts/compare/v0.3.7...v0.4.0

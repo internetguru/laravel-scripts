@@ -37,12 +37,14 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
                 'Composer\\Config::disableProcessTimeout',
                 'rm -f database/testing.sqlite* && echo > database/testing.sqlite'
                     . ' && docker compose exec -e APP_ENV=testing -e DB_CONNECTION=sqlite -e DB_DATABASE=/app/database/testing.sqlite laravel php artisan migrate --force --quiet'
-                    . ' && p="" && if [ -d vendor/brianium/paratest ]; then n=$(nproc) && p="--parallel --processes=$n"'
+                    . ' && p="" && b="" && if [ -d vendor/brianium/paratest ]; then n=$(nproc) && p="--parallel --processes=$n"'
+                    // More than a few Chromiums at once stop answering and hang their workers
+                    . ' && b="--parallel --processes=$(( n < 4 ? n : 4 ))"'
                     . ' && for i in $(seq 1 $n); do cp database/testing.sqlite database/testing.sqlite_test_$i; done; fi'
                     . ' && ' . self::LINK_CHROMIUM
                     // Browser tests next to busy CPU-bound tests starve their Chromium and time out, so they run after
                     . ' && docker compose exec laravel php artisan test $p --exclude-testsuite=Browser @additional_args'
-                    . ' && if [ -d tests/Browser ]; then docker compose exec laravel php artisan test $p --testsuite=Browser @additional_args; fi'
+                    . ' && if [ -d tests/Browser ]; then docker compose exec laravel php artisan test $b --testsuite=Browser @additional_args; fi'
             ],
             'test:browser' => [
                 'Composer\\Config::disableProcessTimeout',
