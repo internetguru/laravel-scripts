@@ -7,7 +7,7 @@ Composer scripts for Internet Guru Laravel applications, plus the shared Interne
 The package ships [Laravel Boost](https://github.com/laravel/boost) guidelines (`resources/boost/guidelines`) and skills (`resources/boost/skills`). Boost merges them into `CLAUDE.md` / `AGENTS.md` and installs the skills.
 
 1. In `boost.json`, add `internetguru/laravel-scripts` to `packages` (or pick it when `php artisan boost:update` asks).
-2. After every `composer update`, run `php artisan boost:update` and commit the result.
+2. After every `composer update`, the package runs `php artisan boost:update` itself (in projects with a `boost.json`); commit the result.
 
 Put project-specific rules in the application's `.ai/rules`, not here.
 
