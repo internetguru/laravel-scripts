@@ -24,7 +24,7 @@ Any new `dev` or `x-dev` version that was not there before blocks the update. Re
 
 ## After updating
 
-1. Run `php artisan boost:update` so the packages' Boost guidelines and skills are refreshed in `CLAUDE.md` and the skills directory.
+1. Check that `composer update` refreshed `CLAUDE.md` and the skills directory: laravel-scripts runs `php artisan boost:update` after it. If it printed that the guidelines were not refreshed, run that command yourself.
 2. Compare the application's overrides in `resources/views/vendor/<namespace>` with the new package views. Re-apply the application's changes on top of the new version, and flag any override that no longer matches the package's markup or data.
 3. Read the packages' `CHANGELOG.md` for the versions skipped, and handle every `Breaking` or `Removed` entry.
 4. Run the tests.

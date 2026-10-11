@@ -6,14 +6,20 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\ScriptEvents;
+use Composer\Util\ProcessExecutor;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
     // Playwright's Chromium paths follow its version, so they are linked again before each run (docker-ansible image)
     private const LINK_CHROMIUM = 'docker compose exec laravel sh -c "command -v playwright-chromium-link >/dev/null && playwright-chromium-link || true"';
 
+    private IOInterface $io;
+
     public function activate(Composer $composer, IOInterface $io): void
     {
+        $this->io = $io;
+
         $scripts = [
             'bash' => [
                 'Composer\\Config::disableProcessTimeout',
@@ -72,6 +78,18 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [];
+        return [ScriptEvents::POST_UPDATE_CMD => 'refreshBoost'];
+    }
+
+    public function refreshBoost(): void
+    {
+        if (! file_exists('boost.json') || ! file_exists('artisan')) {
+            return;
+        }
+
+        $command = ProcessExecutor::escape(PHP_BINARY) . ' artisan boost:update --no-interaction';
+        if ((new ProcessExecutor($this->io))->execute($command) !== 0) {
+            $this->io->writeError('<warning>Boost guidelines were not refreshed; run `php artisan boost:update` by hand.</warning>');
+        }
     }
 }
