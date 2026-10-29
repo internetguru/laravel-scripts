@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `composer run list:scripts` lists the scripts with what each does.
+
+### Changed
+
+- **Breaking:** the `install` script is now `install:docker`, so it is no longer mistaken for Composer's own `install`. Require `internetguru/laravel-scripts:^1` to update.
+- `composer run` lists the scripts alphabetically.
+
+### Fixed
+
+- `install:docker` writes `vendor/` as the current user instead of root.
+- `install:docker` stays on Composer 2, like docker-ansible, instead of following the newest Composer image.
+- The script descriptions added in 0.6.0 show in `composer list` and `composer help <script>`; `composer run` lists the scripts without them, since Composer reads descriptions there only from the application's own `composer.json`.
+
 ## [0.6.0] - 2026-10-29
 
 _Stable release based on [0.6.0-rc.1]._
@@ -208,6 +225,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[Unreleased]: https://github.com/internetguru/laravel-scripts/compare/staging...dev
 [0.6.0]: https://github.com/internetguru/laravel-scripts/compare/v0.5.0...v0.6.0
 [0.6.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.5.0
 [0.5.0]: https://github.com/internetguru/laravel-scripts/compare/v0.4.4...v0.5.0
