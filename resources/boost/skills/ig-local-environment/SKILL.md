@@ -17,7 +17,7 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 
 ## Composer scripts
 
-`internetguru/laravel-scripts` adds these to every application. They run inside the `laravel` container. Call them with `composer run <script>`, because the bare `composer test:php` form is not available for plugin scripts, and pass arguments after `--`, e.g. `composer run artisan -- migrate:status`. They need the stack's `docker-compose.yml`; if docker compose reports "no configuration file provided", the file is missing and the stack needs redeploying with docker-ansible.
+`internetguru/laravel-scripts` adds these to every application. They run inside the `laravel` container. Call them with `composer run <script>` or the short `composer <script>`, and pass arguments after `--`, e.g. `composer run artisan -- migrate:status`. They need the stack's `docker-compose.yml`; if docker compose reports "no configuration file provided", the file is missing and the stack needs redeploying with docker-ansible.
 
 | Command | What it does |
 | --- | --- |
