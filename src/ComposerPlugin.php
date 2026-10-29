@@ -86,6 +86,7 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
             ],
             'list:scripts' => [self::class . '::listScripts'],
         ];
+        ksort($scripts);
 
         $package = $composer->getPackage();
         $existingScripts = $package->getScripts();
@@ -95,8 +96,10 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
     /** `composer run` shows no descriptions for plugin scripts, so this lists them. */
     public static function listScripts(Event $event): void
     {
-        $width = max(array_map('strlen', array_keys(self::DESCRIPTIONS)));
-        foreach (self::DESCRIPTIONS as $script => $description) {
+        $descriptions = self::DESCRIPTIONS;
+        ksort($descriptions);
+        $width = max(array_map('strlen', array_keys($descriptions)));
+        foreach ($descriptions as $script => $description) {
             $event->getIO()->write(sprintf('  <info>%s</info>  %s', str_pad($script, $width), $description));
         }
     }

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- `composer run list:scripts` lists the scripts with what each does.
+- `composer run list:scripts` lists the scripts with what each does, and `composer run` lists the scripts alphabetically.
 
 ### Changed
 
