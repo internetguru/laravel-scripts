@@ -27,6 +27,8 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 | `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
 | `composer run bash` | Shell in the container |
 | `composer run dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |
+| `composer run install:docker` | `composer install` in a temporary Docker container, for a machine without matching PHP |
+| `composer run list:scripts` | These scripts with what each does |
 | `composer run test:browser` | Only the Pest browser tests (`tests/Browser`), on a freshly migrated test database. Extra arguments go after `--`, e.g. `composer run test:browser -- --compact tests/Browser/OrderCreateTest.php` |
 
 ## Browser tests

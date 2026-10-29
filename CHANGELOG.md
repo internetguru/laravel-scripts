@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `composer run list:scripts` lists the scripts with what each does.
+
+### Changed
+
+- The `install` script is now `install:docker`, so it is no longer mistaken for Composer's own `install`.
+
 ### Fixed
 
 - The script descriptions added in 0.6.0 show in `composer list` and `composer help <script>`; `composer run` lists the scripts without them, since Composer reads descriptions there only from the application's own `composer.json`.
