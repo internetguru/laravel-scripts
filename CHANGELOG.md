@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- `composer run test:php` runs only the PHP tests; the full suite, browser tests included, is `composer run test:all`.
+
 ## [0.4.4] - 2026-10-11
 
 ### Fixed
