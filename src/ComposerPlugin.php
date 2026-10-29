@@ -5,12 +5,25 @@ namespace InternetGuru\LaravelScripts;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Plugin\Capability\CommandProvider;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Composer\Util\ProcessExecutor;
 
-class ComposerPlugin implements PluginInterface, EventSubscriberInterface
+class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterface
 {
+    /** What `composer run --list` shows next to each script; install is left out, as Composer has its own command of that name. */
+    public const DESCRIPTIONS = [
+        'bash' => 'Open a shell in the laravel container',
+        'migrate:fresh' => 'Recreate the development database and seed it',
+        'artisan' => 'Run an Artisan command in the laravel container',
+        'dev' => 'Install npm packages and start the Vite dev server',
+        'test:php' => 'Run the PHP tests (Unit and Feature) in parallel',
+        'test:browser' => 'Run the browser tests one at a time',
+        'test:all' => 'Run the PHP tests, then the browser tests',
+    ];
+
     // Playwright's Chromium paths follow its version, so they are linked again before each run (docker-ansible image)
     private const LINK_CHROMIUM = 'docker compose exec laravel sh -c "command -v playwright-chromium-link >/dev/null && playwright-chromium-link || true"';
 
@@ -73,6 +86,11 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $package = $composer->getPackage();
         $existingScripts = $package->getScripts();
         $package->setScripts(array_merge($existingScripts, $scripts));
+    }
+
+    public function getCapabilities(): array
+    {
+        return [CommandProvider::class => ScriptCommands::class];
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void

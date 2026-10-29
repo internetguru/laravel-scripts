@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `composer run` lists each script with a description, and the scripts also run in the short form, e.g. `composer test:php`.
+
 ## [0.5.0] - 2026-10-29
 
 _Stable release based on [0.5.0-rc.1]._
