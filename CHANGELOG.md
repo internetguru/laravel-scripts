@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.6.0-rc.1] - 2026-10-29
 
 ### Added
 
@@ -204,7 +204,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
-[Unreleased]: https://github.com/internetguru/laravel-scripts/compare/staging...dev
+[0.6.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.5.0
 [0.5.0]: https://github.com/internetguru/laravel-scripts/compare/v0.4.4...v0.5.0
 [0.5.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.4.4
 [0.4.4]: https://github.com/internetguru/laravel-scripts/compare/v0.4.3...v0.4.4
