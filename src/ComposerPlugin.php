@@ -56,7 +56,7 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
                 'rm -f database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
             ],
             'install:docker' => [
-                'docker run --rm -v $(pwd):/app composer install --no-interaction --ignore-platform-reqs --working-dir=/app'
+                'docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/app composer:2 install --no-interaction --ignore-platform-reqs --working-dir=/app'
             ],
             'artisan' => [
                 'Composer\\Config::disableProcessTimeout',
