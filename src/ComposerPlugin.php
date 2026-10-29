@@ -8,20 +8,23 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Composer\Util\ProcessExecutor;
 
 class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterface
 {
-    /** What `composer run --list` shows next to each script; install is left out, as Composer has its own command of that name. */
+    /** What `composer list` and `composer run list:scripts` show next to each script. */
     public const DESCRIPTIONS = [
         'bash' => 'Open a shell in the laravel container',
         'migrate:fresh' => 'Recreate the development database and seed it',
+        'install:docker' => 'Run composer install in a temporary Docker container, without local PHP',
         'artisan' => 'Run an Artisan command in the laravel container',
         'dev' => 'Install npm packages and start the Vite dev server',
         'test:php' => 'Run the PHP tests (Unit and Feature) in parallel',
         'test:browser' => 'Run the browser tests one at a time',
         'test:all' => 'Run the PHP tests, then the browser tests',
+        'list:scripts' => 'List these scripts with what they do',
     ];
 
     // Playwright's Chromium paths follow its version, so they are linked again before each run (docker-ansible image)
@@ -52,8 +55,8 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
             'migrate:fresh' => [
                 'rm -f database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
             ],
-            'install' => [
-                'docker run --rm -v $(pwd):/app composer install --no-interaction --ignore-platform-reqs --working-dir=/app'
+            'install:docker' => [
+                'docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/app composer:2 install --no-interaction --ignore-platform-reqs --working-dir=/app'
             ],
             'artisan' => [
                 'Composer\\Config::disableProcessTimeout',
@@ -81,11 +84,24 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
                     . ' && ' . self::RUN_PHP
                     . ' && if [ -d tests/Browser ]; then docker compose exec laravel php artisan test $b --testsuite=Browser @additional_args; fi'
             ],
+            'list:scripts' => [self::class . '::listScripts'],
         ];
+        ksort($scripts);
 
         $package = $composer->getPackage();
         $existingScripts = $package->getScripts();
         $package->setScripts(array_merge($existingScripts, $scripts));
+    }
+
+    /** `composer run` shows no descriptions for plugin scripts, so this lists them. */
+    public static function listScripts(Event $event): void
+    {
+        $descriptions = self::DESCRIPTIONS;
+        ksort($descriptions);
+        $width = max(array_map('strlen', array_keys($descriptions)));
+        foreach ($descriptions as $script => $description) {
+            $event->getIO()->write(sprintf('  <info>%s</info>  %s', str_pad($script, $width), $description));
+        }
     }
 
     public function getCapabilities(): array
