@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.0] - 2026-10-29
+
+_Stable release based on [0.5.0-rc.1]._
+
+## [0.5.0-rc.1] - 2026-10-29
+
+### Changed
+
+- `composer run test:php` runs only the PHP tests; the full suite, browser tests included, is `composer run test:all`.
+
 ## [0.4.4] - 2026-10-11
 
 ### Fixed
@@ -188,6 +198,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[0.5.0]: https://github.com/internetguru/laravel-scripts/compare/v0.4.4...v0.5.0
+[0.5.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.4.4
 [0.4.4]: https://github.com/internetguru/laravel-scripts/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/internetguru/laravel-scripts/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/internetguru/laravel-scripts/compare/v0.4.1...v0.4.2
