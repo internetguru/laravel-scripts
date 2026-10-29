@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The script descriptions added in 0.6.0 show in `composer list` and `composer help <script>`; `composer run` lists the scripts without them, since Composer reads descriptions there only from the application's own `composer.json`.
+
 ## [0.6.0] - 2026-10-29
 
 _Stable release based on [0.6.0-rc.1]._
