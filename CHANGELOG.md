@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- The `install` script is now `install:docker`, so it is no longer mistaken for Composer's own `install`.
+- **Breaking:** the `install` script is now `install:docker`, so it is no longer mistaken for Composer's own `install`. Require `internetguru/laravel-scripts:^1` to update.
 - `composer run` lists the scripts alphabetically.
 
 ### Fixed

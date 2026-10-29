@@ -2,6 +2,26 @@
 
 Composer scripts for Internet Guru Laravel applications, plus the shared Internet Guru guidelines and skills for AI agents.
 
+## Installation
+
+`composer require internetguru/laravel-scripts:^1`, and allow the plugin when Composer asks.
+
+## Scripts
+
+The plugin adds these scripts to the application. They run in its Docker stack (service `laravel`); call them as `composer run <script>` or `composer <script>`, and see them with their descriptions in `composer run list:scripts`.
+
+| Script | What it does |
+| :-- | :-- |
+| `artisan` | Run an Artisan command in the `laravel` container, e.g. `composer run artisan -- migrate:status` |
+| `bash` | Open a shell in the `laravel` container |
+| `dev` | Install npm packages and start the Vite dev server |
+| `install:docker` | Run `composer install` in a temporary Composer 2 container, for a machine without matching PHP |
+| `list:scripts` | List these scripts with what they do |
+| `migrate:fresh` | Recreate the development database and seed it |
+| `test:all` | Run the PHP tests, then the browser tests |
+| `test:browser` | Run the browser tests one at a time |
+| `test:php` | Run the PHP tests (Unit and Feature) in parallel |
+
 ## AI guidelines
 
 The package ships [Laravel Boost](https://github.com/laravel/boost) guidelines (`resources/boost/guidelines`) and skills (`resources/boost/skills`). Boost merges them into `CLAUDE.md` / `AGENTS.md` and installs the skills.
