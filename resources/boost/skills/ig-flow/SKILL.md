@@ -32,10 +32,18 @@ How a change moves:
 
 Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
 
-- Change `VERSION`.
+- Change `VERSION`, except for a major bump on `dev` (see below).
 - Add, rename or date a version heading (`## [2.11.0] - 2026-09-15`, `## [2.11.0-rc.6]`), add the `_Stable release based on …_` note, or edit the compare links at the bottom of `CHANGELOG.md`.
 - Create tags, or merge, rebase or cherry-pick between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
 - Write or amend commits named `Update changelog`, `Update changelog and increment version`, `Update changelog and restore version` or `Update control files`. These are Flow's.
+
+## Major version
+
+Flow raises only minor and patch versions on its own; it has no major option. A major bump is a plain edit of `VERSION` on `dev`, e.g. `0.30.0` to `1.0.0`, committed on its own (`Start version 1.0.0`). Flow accepts it because it only checks that `dev` is not below the next minor of `staging`; the next `flow` on `dev` then releases `1.0.0-rc.1`.
+
+- Bump only when the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
+- Do it on `dev` only, never on `staging`, production, a feature or a hotfix branch.
+- Mark what breaks with a `**Breaking:**` entry under `[Unreleased]` (see `ig-changelog`).
 
 ## Before starting a task
 
