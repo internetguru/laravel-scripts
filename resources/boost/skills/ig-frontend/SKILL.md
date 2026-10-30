@@ -76,7 +76,10 @@ Never make text harder to read to make it look less important. Show that somethi
 ## Icons and images
 
 - **Icons:** Font Awesome uses the SVG core with an explicit library. Every icon must be imported and added to `library.add(…)` in `resources/js/fontawesome-init.js`. Otherwise the `<i class="fa-solid fa-…">` tag silently renders nothing, even when the class name is right.
-- **Images:** site images live in `resources/images` and are referenced with `Vite::asset('resources/images/…')`, so they are content-hashed. Only fixed-path files such as favicons, the web manifest and `public/icons` stay in `public/`.
+- **Images:**
+  - Photos and other raster images (`jpg`, `png`, `webp`, `gif`, `avif`) in an `<img>` live on the laravel-images source disk and render with `<x-ig-images::img>`, which resizes, converts and sizes them. laravel-common's image check logs any other local raster `<img>` as critical.
+  - SVGs and images used from Sass (`url()`) or imported in JS live in `resources/images`, which Vite bundles with a content hash. Reference an SVG in Blade with `Vite::asset('resources/images/…')`.
+  - Only fixed-path files such as favicons, the web manifest and `public/icons` stay in `public/`.
 
 ## Building
 

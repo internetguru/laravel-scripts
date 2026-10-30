@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- The `ig-flow` skill explains a major version bump: a plain `VERSION` edit on `dev`, which Flow accepts.
+- The `ig-frontend` skill puts photos and other raster images on the laravel-images disk, rendered with `<x-ig-images::img>`, and keeps `resources/images` with `Vite::asset()` for SVGs and images used from Sass or JS.
+
 ## [1.0.0] - 2026-10-29
 
 _Stable release based on [1.0.0-rc.1]._
@@ -229,6 +236,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[Unreleased]: https://github.com/internetguru/laravel-scripts/compare/staging...dev
 [1.0.0]: https://github.com/internetguru/laravel-scripts/compare/v0.6.0...v1.0.0
 [1.0.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v0.6.0
 [0.6.0]: https://github.com/internetguru/laravel-scripts/compare/v0.5.0...v0.6.0
