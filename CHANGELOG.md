@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- The `ig-flow` skill explains a major version bump: a plain `VERSION` edit on `dev`, which Flow accepts.
 - The `ig-frontend` skill puts photos and other raster images on the laravel-images disk, rendered with `<x-ig-images::img>`, and keeps `resources/images` with `Vite::asset()` for SVGs and images used from Sass or JS.
 
 ## [1.0.0] - 2026-10-29
