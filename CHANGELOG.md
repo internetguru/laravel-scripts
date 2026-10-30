@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The `ig-frontend` skill puts photos and other raster images on the laravel-images disk, rendered with `<x-ig-images::img>`, and keeps `resources/images` with `Vite::asset()` for SVGs and images used from Sass or JS.
+
 ## [1.0.0] - 2026-10-29
 
 _Stable release based on [1.0.0-rc.1]._
