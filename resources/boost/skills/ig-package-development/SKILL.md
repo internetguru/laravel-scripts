@@ -1,12 +1,24 @@
 ---
 name: ig-package-development
-description: "Change an internetguru/* Composer package (laravel-common, laravel-user, laravel-model-browser, laravel-feedback, ...) that the application uses. Activate when a fix or feature belongs in a package rather than the application, when the user mentions a package by name or its view namespace (ig-common, ig-user, ig-feedback, model-browser), or when tempted to edit anything under vendor/internetguru."
+description: "Decide whether a feature belongs in an internetguru/* Composer package (laravel-common, laravel-user, laravel-model-browser, laravel-feedback, ...) and change that package. Activate before building a new feature or reusable piece in the application, when a fix or feature belongs in a package rather than the application, when the user mentions a package by name or its view namespace (ig-common, ig-user, ig-feedback, model-browser), or when tempted to edit anything under vendor/internetguru."
 metadata:
   author: internetguru
 ---
 # Developing internetguru packages
 
 The application installs `internetguru/*` packages from Packagist. Their source lives in separate GitHub repositories (`github.com/internetguru/<package>`), which developers check out next to their applications.
+
+## Where a feature belongs
+
+Before building a new feature, or a reusable piece of one, decide where it lives. Prefer a package whenever it makes sense, so every application gets it and it is maintained once.
+
+1. **An existing package.** List the installed ones with `composer show 'internetguru/*'`, keep in mind the other `laravel-*` packages at `github.com/internetguru`, and read their READMEs. If the feature extends what a package already does, or is generic enough that other Internet Guru applications would use it (a Blade or Livewire component, trait, validation rule, middleware, helper, Artisan command, Sass partial, Alpine component), it goes there. `laravel-common` takes generic pieces that fit no more specific package.
+2. **A new package**, as a last resort: only for a self-contained area that no existing package covers and that more applications will need. Propose its name and scope; don't create it yourself.
+3. **The application**, for what only this application needs: its own domain models, pages, business rules and texts.
+
+A feature can split: keep the generic part in a package and the application-specific part, such as configuration, texts or a view override, in the application.
+
+Before writing code, tell the user where you would put the feature and why, and let them decide. When it goes to a package, check its compatibility first (see below).
 
 ## Rules
 
