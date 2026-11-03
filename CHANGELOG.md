@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents add a test only for behaviour that could break unnoticed, not for purely visual changes such as styles, icons or wording.
+
 ## [1.1.1] - 2026-11-02
 
 ### Changed
