@@ -20,6 +20,8 @@ A feature can split: keep the generic part in a package and the application-spec
 
 Before writing code, tell the user where you would put the feature and why, and let them decide. When it goes to a package, check its compatibility first (see below).
 
+When a package change is worth considering but not made now, for example because the application uses a stopgap until the package is released, record it under the application's Considerations (see the Internet Guru guidelines). Name the package, and the stopgap to remove once the release is in the application.
+
 ## Rules
 
 - Never edit `vendor/`, never copy files into it, and never add a path repository or symlink. To run unreleased package code, use the vendor mount described below.
