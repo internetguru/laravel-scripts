@@ -89,13 +89,8 @@ Where an entry goes depends on the branch you are on (`git branch --show-current
 
 - **`dev`**: under `## [Unreleased]`, in the same commit as the change.
 - **`staging`**: under the topmost heading, the current release candidate (e.g. `## [2.11.0-rc.5]`). Do not create an `[Unreleased]` section there. If the topmost heading is a released version, `staging` holds no candidate yet: never write under it, run `flow --yes --conform --pull` first (see "Work committed on `staging`") and write under the new `-rc.1` heading.
-- **Feature branch**: do not edit `CHANGELOG.md`. Flow asks for the entries when it merges the feature into `dev`, and adds a generic "New feature '…'" line if none is given. When the user approves the release, pipe the entries in, one `Keyword: message` per line and an empty line to finish:
-
-  ```bash
-  printf 'Added: The gift card list can be narrowed by expiration.\nFixed: A label keeps its colour.\n\n' | flow --yes
-  ```
-
-- **Hotfix branch**: the same. Flow creates the new patch heading on release and asks for the entries, `Fixed` by default; pipe them in the same way.
+- **Feature or hotfix branch**: under `## [Unreleased]`, in the same commit as the change, like on `dev`. On a hotfix branch, add the `[Unreleased]` heading above the topmost version when it is missing. Flow turns it into the release heading when it merges the branch.
+  - Flow (`--changelog=auto`, the default) prompts for an entry only when the branch adds none. If it does, the entry is missing: stop, write it, commit and run `flow --yes` again. For a branch with no visible change (a refactor, tests), release it with `flow --yes --changelog=never` so Flow adds no generic entry.
 - **Production or `main-N`**: do not commit there. Offer a hotfix branch instead (see "Before starting a task").
 
 See `ig-changelog` for how to word an entry.

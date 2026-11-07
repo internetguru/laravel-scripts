@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents write changelog entries under `[Unreleased]` on feature and hotfix branches too, instead of piping them into Flow's release prompt. Requires Flow 3.3.0 or later.
+
 ## [1.3.0] - 2026-11-07
 
 _Stable release based on [1.3.0-rc.1]._

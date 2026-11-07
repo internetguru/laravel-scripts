@@ -50,7 +50,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Changelog
 
-- Every change a user or package consumer would notice gets a `CHANGELOG.md` entry, in the same commit as the change. Which section it goes to depends on the branch: `[Unreleased]` on `dev`, the current release candidate on `staging`, and Flow's release prompt on feature and hotfix branches (see `ig-flow`). Follow [Keep a Changelog](https://keepachangelog.com/en/2.0.0/), keep each entry brief and human readable, and activate `ig-changelog` before writing one.
+- Every change a user or package consumer would notice gets a `CHANGELOG.md` entry, in the same commit as the change. Which section it goes to depends on the branch: `[Unreleased]` on `dev`, feature and hotfix branches, and the current release candidate on `staging` (see `ig-flow`). Follow [Keep a Changelog](https://keepachangelog.com/en/2.0.0/), keep each entry brief and human readable, and activate `ig-changelog` before writing one.
 
 ## Commits
 
