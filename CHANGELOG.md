@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2026-11-07
+
+_Stable release based on [1.3.0-rc.1]._
+
 ## [1.3.0-rc.1] - 2026-11-07
 
 ### Added
@@ -262,6 +266,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.3.0]: https://github.com/internetguru/laravel-scripts/compare/v1.2.0...v1.3.0
 [1.3.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.2.0
 [1.2.0]: https://github.com/internetguru/laravel-scripts/compare/v1.1.1...v1.2.0
 [1.2.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.1.1
