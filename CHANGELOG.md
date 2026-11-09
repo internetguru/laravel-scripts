@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Agents write in American English and correct British spelling they come across.
+- Agents open each section of a plan with a plain-language summary before the technical details.
+- Agents check the current branch again before deciding anything based on it or reporting on it.
+
 ## [1.4.0] - 2026-11-07
 
 _Stable release based on [1.4.0-rc.1]._
@@ -276,6 +284,7 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[Unreleased]: https://github.com/internetguru/laravel-scripts/compare/staging...dev
 [1.4.0]: https://github.com/internetguru/laravel-scripts/compare/v1.3.0...v1.4.0
 [1.4.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.3.0
 [1.3.0]: https://github.com/internetguru/laravel-scripts/compare/v1.2.0...v1.3.0

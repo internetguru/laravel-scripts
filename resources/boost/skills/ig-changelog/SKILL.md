@@ -26,10 +26,10 @@ Every Internet Guru application and package keeps a `CHANGELOG.md` in the [Keep 
 - Write for the reader of the release notes, not for the reviewer of the diff.
   - Application: describe what a user sees or can do. Name screens, buttons and labels as the user reads them, not classes or routes.
   - Package: describe what a consumer of the package must know. Public API names such as components, config keys and traits are fine here.
-- Describe the new behaviour in the present tense, starting with its subject, not with "Fix" or "Add". End with a period:
+- Describe the new behavior in the present tense, starting with its subject, not with "Fix" or "Add". End with a period:
   - `- The gift card list can be narrowed by the credit left on a card.`
   - `- Payment types are named in one word each: Register, Gateway, Manual and Bank.`
-  - `- A label's icon keeps its colour once Font Awesome replaces the icon tag with an SVG.`
+  - `- A label's icon keeps its color once Font Awesome replaces the icon tag with an SVG.`
 - A change that later work in the same `[Unreleased]` section changes again is edited in place, not appended as a second entry.
 - Internal refactors, tests and dependency bumps with no visible effect get no entry.
 - For a breaking change in a package, say so and what to do, e.g. `- **Breaking:** \`HasLabel::label()\` returns a string; wrap existing \`HtmlString\` returns.` Point out to the user that it needs a major release.
