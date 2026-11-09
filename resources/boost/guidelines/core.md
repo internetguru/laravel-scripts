@@ -5,6 +5,7 @@ This application is built by Internet Guru on top of its own `internetguru/*` pa
 ## Boundaries
 
 - Branches, versions and releases are managed by the Flow script (`internetguru/flow`). Never change `VERSION` (except a major bump on `dev`, see `ig-flow`), version headings in `CHANGELOG.md` or tags by hand, and never merge between key branches yourself. Before starting a task, run `flow --pull` to bring in coworkers' changes, then ask whether to work on the current branch or create a feature or hotfix branch. A fix for the release candidate is committed on `staging`, not released again from `dev`. A commit on `staging` is always merged into `dev` (`flow --yes --conform --pull`) before it is pushed. After committing, ask whether to push or release. Run `flow` or `git push` only after the user agrees to that step. Activate `ig-flow`.
+- Before deciding anything based on the current branch, or reporting on it, check it again with `git branch --show-current`. The developer may switch branches by hand, or a tool may switch them in the background, so the branch you saw earlier may no longer be current.
 - Never edit, copy into, or symlink anything under `vendor/`, and do not switch a package to a path repository. A change to an `internetguru/*` package belongs in that package's own repository. It runs in the application only while the developer's `docker-compose.vendor.yml` mounts that package into the containers; activate `ig-package-development`.
 - Before building a new feature, first consider whether it belongs in a package rather than the application: anything other Internet Guru applications would use, or that extends what an `internetguru/*` package already does, goes to `laravel-common` or the fitting existing package. Propose a new package only as a last resort, for a self-contained area no package covers. Say where you would put it and why, and let the user decide before writing code; activate `ig-package-development`.
 - Do not build frontend assets (`npm run build`, `npm run dev`); the developer runs Vite.
@@ -22,6 +23,11 @@ This application is built by Internet Guru on top of its own `internetguru/*` pa
 - Never run hand-written SQL, `migrate:fresh`, `db:seed` or any other write against a database that is not the local development or test one. Data changes ship as migrations.
 - Never commit `.env` files, database dumps (`*.sql`, `*.sqlite`) or credentials, and use only test keys for payment gateways.
 
+## Writing
+
+- Write English in American spelling (en_US): `color`, `behavior`, `center`, `gray`, `analyze`. This covers replies, plans, comments, docs, changelog entries, commit messages and `lang/en`. Fix any British spelling you come across in such text without asking, unless the user says otherwise. Leave identifiers that other code or packages rely on, such as config keys, CSS classes or translation keys, alone.
+- In a plan, open each section with a short plain-language summary of what changes and why, readable without knowing the code. Files, functions and other technical details come after it.
+
 ## Code style
 
 - Code documents itself through names and small methods. Write a comment only where the code cannot say why, and keep it to one line. Never restate the code, never leave commented-out code, and never keep generated docblocks such as "Display the specified resource." PHPDoc is only for types the signature cannot express, such as array shapes and generics.
@@ -31,9 +37,9 @@ This application is built by Internet Guru on top of its own `internetguru/*` pa
 
 The full suite takes minutes, so running it is not the agent's job.
 
-- **When to add a test:** only for behaviour that could break unnoticed, such as logic, permissions, validation, stored data, or a Livewire or Alpine interaction. A purely visual change (styles, icons, wording, spacing, layout) gets no new test, and never a browser test that only pins a style. This overrides Boost's rule to test every change.
+- **When to add a test:** only for behavior that could break unnoticed, such as logic, permissions, validation, stored data, or a Livewire or Alpine interaction. A purely visual change (styles, icons, wording, spacing, layout) gets no new test, and never a browser test that only pins a style. This overrides Boost's rule to test every change.
 - **While working:** run only the test file or `--filter` that covers the change, e.g. `composer run artisan -- test --compact --no-ansi tests/Feature/OrderDetailTest.php`. That takes seconds. Never run the full suite mid-task, and don't rerun tests after every edit.
-- **Browser tests:** behaviour that only works in the browser (Livewire actions, Alpine, modals, keyboard handling) gets a Pest browser test in `tests/Browser`; the rest stays in feature tests. Select elements by `@testid` and add a `data-testid` to the view when one is missing, build data with factories, and end each test with `assertNoJavascriptErrors()`. Run it like any test file; on a failure, read the screenshot in `tests/Browser/Screenshots`. Activate `ig-local-environment` when the browser does not start or a page loads without its styles or scripts.
+- **Browser tests:** behavior that only works in the browser (Livewire actions, Alpine, modals, keyboard handling) gets a Pest browser test in `tests/Browser`; the rest stays in feature tests. Select elements by `@testid` and add a `data-testid` to the view when one is missing, build data with factories, and end each test with `assertNoJavascriptErrors()`. Run it like any test file; on a failure, read the screenshot in `tests/Browser/Screenshots`. Activate `ig-local-environment` when the browser does not start or a page loads without its styles or scripts.
 - **Before a commit:** add or update the tests the change needs in the same commit, then run the affected test files once, e.g. every `tests/Feature/Order*Test.php` after touching orders.
 - **Full suite:** CI runs it only on the production branch (`main` or `master`), so on other branches the developer runs `composer run test:all`. That command migrates the test database once and runs in parallel when Paratest is installed; `test:php` runs only the PHP tests and `test:browser` only the browser tests. If the user asks for the full suite, run `composer run test:all -- --compact --no-ansi` in the background and report only the summary and the failures.
 - **Output:** always pass `--compact --no-ansi`. Never `--colors=never`: `artisan test` adds its own `--colors` in a terminal, and Pest exits with an error on the duplicate. Add `--bail` (Pest) or `--stop-on-failure` (PHPUnit) when chasing a failure. Read failures from the end of the output, not the whole log.
@@ -46,7 +52,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Frontend
 
-- Reuse the `x-ig::` package components, use Bootstrap utilities and Sass partials instead of inline `style`, size things in relative units (`rem`, `em`, `%`, `vw`/`vh`, `thin` borders) and never `px`, never shrink or fade text to make it look secondary (no text below `1rem`, WCAG AA contrast), keep behaviour in global Alpine components rather than `<script>` tags, and register every Font Awesome icon in `resources/js/fontawesome-init.js`. Activate `ig-frontend` before touching `resources/views`, `resources/sass` or `resources/js`.
+- Reuse the `x-ig::` package components, use Bootstrap utilities and Sass partials instead of inline `style`, size things in relative units (`rem`, `em`, `%`, `vw`/`vh`, `thin` borders) and never `px`, never shrink or fade text to make it look secondary (no text below `1rem`, WCAG AA contrast), keep behavior in global Alpine components rather than `<script>` tags, and register every Font Awesome icon in `resources/js/fontawesome-init.js`. Activate `ig-frontend` before touching `resources/views`, `resources/sass` or `resources/js`.
 
 ## Changelog
 
