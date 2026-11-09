@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents write in American English and correct British spelling they come across.
+- Agents open each section of a plan with a plain-language summary before the technical details.
+- Agents check the current branch again before deciding anything based on it or reporting on it.
+
 ## [1.4.0] - 2026-11-07
 
 _Stable release based on [1.4.0-rc.1]._
