@@ -1,6 +1,6 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
+description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 metadata:
   author: internetguru
 ---
@@ -51,7 +51,7 @@ First run `flow --pull` in the repository. Coworkers push to the same branches, 
 
 `flow --pull` checks out every remote branch in turn. If an old branch still tracks a file that docker-ansible now generates (`docker-compose.yml`, `Dockerfile`), Git replaces the ignored local copy with that branch's version and then deletes it when switching back. After pulling an application, check that `Dockerfile` and `docker-compose*.yml` still exist. If one is gone, tell the user the local stack needs redeploying with docker-ansible (`./run.sh deploy <group> <domain>`, plus `-f …/docker-compose.vendor.yml` if they test packages); don't recreate it by hand.
 
-Then check the current branch (`git branch --show-current`), and ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
+Then check the current branch (`git branch --show-current`) and decide where the work belongs before changing any file. If the current branch is the one you would recommend, work there without asking and mention it in one line. Ask the user only when you would recommend a different branch or the choice is ambiguous; then offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
 - **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major).

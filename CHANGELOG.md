@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents work on the current branch without asking when it fits the task, and ask only when they would recommend another branch or the choice is ambiguous.
+
 ## [1.5.0] - 2026-11-09
 
 _Stable release based on [1.5.0-rc.1]._
