@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Agents work on the current branch without asking when it fits the task, and ask only when they would recommend another branch or the choice is ambiguous.
+- Agents discuss the approach of a task until it is agreed before changing files, and end it with follow-ups ranked by significance, naming the most severe one.
+- For bigger tasks or on request, agents get advice and a code and UI review from the strongest model available.
 
 ## [1.5.0] - 2026-11-09
 
