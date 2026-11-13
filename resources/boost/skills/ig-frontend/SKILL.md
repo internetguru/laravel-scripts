@@ -67,7 +67,7 @@ Never make text harder to read to make it look less important. Show that somethi
   - 3:1 for icons, borders and focus rings that carry meaning
   - Check the text color against the background it actually sits on. Gray text on a light gray or tinted box (`$gray-600` on `$gray-100`, `.text-muted` inside `.bg-light` or an `.alert`) usually fails even though each looks fine on white.
 - **No fading:** no `opacity` on text, no light grays (`$gray-400`–`$gray-600`) for content, and no `.text-muted` or `.text-body-secondary` for anything people need to read. Use `$body-color`, or a theme color that passes contrast.
-- **Weight and style:** body text stays at weight 400 or more. Don't use light or thin weights, long italic passages, or `text-uppercase` on more than a few words.
+- **Style:** no long italic passages, and `text-uppercase` on a few words at most.
 - **Line length and spacing:** paragraphs at most about `70ch` wide, `line-height` at least 1.5, no negative `letter-spacing`.
 - **Text over images and color:** put text on a solid background or an overlay that keeps the contrast. Never let color alone carry the meaning: add a word or an icon.
 - **Disabled and placeholder text:** a placeholder is not a label and does not replace one. Don't put information only in placeholder or disabled text, which browsers render faded.
@@ -83,4 +83,4 @@ Never make text harder to read to make it look less important. Show that somethi
 
 ## Building
 
-Never run `npm run build` or `npm run dev`. If a change does not appear in the browser, tell the user it needs a Vite rebuild (`composer run dev`).
+If a change does not appear in the browser, tell the user it needs a Vite rebuild (`composer run dev`).

@@ -26,7 +26,7 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 | `composer run test:all` | The full suite: `test:php`, then the `Browser` suite, because Chromium starves next to busy CPU-bound tests, in at most four processes, because more Chromiums at once stop answering. Extra arguments go to both runs |
 | `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
 | `composer run bash` | Shell in the container |
-| `composer run dev` | `npm install` and the Vite dev server (the developer runs this, not the agent) |
+| `composer run dev` | `npm install` and the Vite dev server, run by the developer |
 | `composer run install:docker` | `composer install` in a temporary Docker container, for a machine without matching PHP |
 | `composer run list:scripts` | These scripts with what each does |
 | `composer run test:browser` | Only the Pest browser tests (`tests/Browser`), on a freshly migrated test database. Extra arguments go after `--`, e.g. `composer run test:browser -- --compact tests/Browser/OrderCreateTest.php` |
@@ -56,4 +56,4 @@ DB_DATABASE=$PWD/database/testing.sqlite php artisan test --compact
 
 If the project has `database/schema/sqlite-schema.dump`, Laravel loads it through the `sqlite3` command-line tool. When that binary is missing (the PHP extension alone is not enough), the suite fails early. Ask the user to install `sqlite3`, or put a small script named `sqlite3` on `PATH` that pipes stdin into the database through PDO.
 
-A test that also fails on a clean checkout is pre-existing. Name it as such instead of attributing it to your change.
+A test that also fails on a clean checkout is pre-existing. Name it as such.

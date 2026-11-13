@@ -30,9 +30,8 @@ How a change moves:
 
 ## Only through Flow
 
-Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
+Edit `VERSION` only on `dev`, when a breaking change requires a new major version (see below). Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
 
-- Change `VERSION`, except for a major bump on `dev` (see below).
 - Add, rename or date a version heading (`## [2.11.0] - 2026-09-15`, `## [2.11.0-rc.6]`), add the `_Stable release based on …_` note, or edit the compare links at the bottom of `CHANGELOG.md`.
 - Create tags, or merge, rebase or cherry-pick between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
 - Write or amend commits named `Update changelog`, `Update changelog and increment version`, `Update changelog and restore version` or `Update control files`. These are Flow's.
@@ -41,8 +40,7 @@ Never do any of these by hand. Flow does them, and doing them yourself breaks it
 
 Flow raises only minor and patch versions on its own; it has no major option. A major bump is a plain edit of `VERSION` on `dev`, e.g. `0.30.0` to `1.0.0`, committed on its own (`Start version 1.0.0`). Flow accepts it because it only checks that `dev` is not below the next minor of `staging`; the next `flow` on `dev` then releases `1.0.0-rc.1`.
 
-- Bump only when the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
-- Do it on `dev` only, never on `staging`, production, a feature or a hotfix branch.
+- Bump only on `dev`, when a breaking change requires it and the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
 - Mark what breaks with a `**Breaking:**` entry under `[Unreleased]` (see `ig-changelog`).
 
 ## Before starting a task
@@ -58,11 +56,9 @@ Then check the current branch (`git branch --show-current`) and decide where the
 - **A fix for the release candidate on `staging`** (it fails in testing or does not deploy): commit it directly on `staging`, see "Work committed on `staging`". Never commit it on `dev` and run `flow` there for a new candidate: that adds an `-rc.N` with nothing but the fix, and ships whatever else waits on `dev` along with it.
 - **Already on a feature or hotfix branch:** continue there, unless the task is unrelated.
 
-Skip the question when the user has already said where to work, or when the task changes no files.
-
 ## After committing
 
-Do not ask what comes next after a commit. Only when the user asks for git advice, lay out the options and say exactly what each one runs:
+When the user asks for git advice, lay out the options and say exactly what each one runs:
 
 - **Nothing yet:** leave it local.
 - **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`. On `staging`, first merge it into `dev` with `flow --yes --conform --pull`, then push both with `flow --push` (see "Work committed on `staging`"); never push `staging` alone.
