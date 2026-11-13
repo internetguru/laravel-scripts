@@ -1,6 +1,6 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
+description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing when the user asks what to do next (to describe pushing or releasing), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 metadata:
   author: internetguru
 ---
@@ -30,9 +30,8 @@ How a change moves:
 
 ## Only through Flow
 
-Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
+Edit `VERSION` only on `dev`, when a breaking change requires a new major version (see below). Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
 
-- Change `VERSION`, except for a major bump on `dev` (see below).
 - Add, rename or date a version heading (`## [2.11.0] - 2026-09-15`, `## [2.11.0-rc.6]`), add the `_Stable release based on …_` note, or edit the compare links at the bottom of `CHANGELOG.md`.
 - Create tags, or merge, rebase or cherry-pick between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
 - Write or amend commits named `Update changelog`, `Update changelog and increment version`, `Update changelog and restore version` or `Update control files`. These are Flow's.
@@ -41,8 +40,7 @@ Never do any of these by hand. Flow does them, and doing them yourself breaks it
 
 Flow raises only minor and patch versions on its own; it has no major option. A major bump is a plain edit of `VERSION` on `dev`, e.g. `0.30.0` to `1.0.0`, committed on its own (`Start version 1.0.0`). Flow accepts it because it only checks that `dev` is not below the next minor of `staging`; the next `flow` on `dev` then releases `1.0.0-rc.1`.
 
-- Bump only when the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
-- Do it on `dev` only, never on `staging`, production, a feature or a hotfix branch.
+- Bump only on `dev`, when a breaking change requires it and the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
 - Mark what breaks with a `**Breaking:**` entry under `[Unreleased]` (see `ig-changelog`).
 
 ## Before starting a task
@@ -51,18 +49,16 @@ First run `flow --pull` in the repository. Coworkers push to the same branches, 
 
 `flow --pull` checks out every remote branch in turn. If an old branch still tracks a file that docker-ansible now generates (`docker-compose.yml`, `Dockerfile`), Git replaces the ignored local copy with that branch's version and then deletes it when switching back. After pulling an application, check that `Dockerfile` and `docker-compose*.yml` still exist. If one is gone, tell the user the local stack needs redeploying with docker-ansible (`./run.sh deploy <group> <domain>`, plus `-f …/docker-compose.vendor.yml` if they test packages); don't recreate it by hand.
 
-Then check the current branch (`git branch --show-current`), and ask the user where the work should happen before changing any file. Offer the option that fits, and recommend one:
+Then check the current branch (`git branch --show-current`) and decide where the work belongs before changing any file. If the current branch is the one you would recommend, work there without asking and mention it in one line. Ask the user only when you would recommend a different branch or the choice is ambiguous; then offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
 - **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major).
 - **A fix for the release candidate on `staging`** (it fails in testing or does not deploy): commit it directly on `staging`, see "Work committed on `staging`". Never commit it on `dev` and run `flow` there for a new candidate: that adds an `-rc.N` with nothing but the fix, and ships whatever else waits on `dev` along with it.
 - **Already on a feature or hotfix branch:** continue there, unless the task is unrelated.
 
-Skip the question when the user has already said where to work, or when the task changes no files.
-
 ## After committing
 
-Once the commit is made, ask the user what comes next, and say exactly what each option runs:
+When the user asks for git advice, lay out the options and say exactly what each one runs:
 
 - **Nothing yet:** leave it local.
 - **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`. On `staging`, first merge it into `dev` with `flow --yes --conform --pull`, then push both with `flow --push` (see "Work committed on `staging`"); never push `staging` alone.
@@ -73,7 +69,7 @@ Once the commit is made, ask the user what comes next, and say exactly what each
   - hotfix → a production patch: `flow --yes` on the hotfix branch
   - Follow a release with `flow --push`, if the user wants it pushed.
 
-Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Always pass `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
+Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Consider passing `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
 
 ### Work committed on `staging`
 
@@ -97,6 +93,6 @@ See `ig-changelog` for how to word an entry.
 
 ## Commits
 
-- Commit when the user asks, on the current branch, then follow "After committing".
+- Commit when the user asks, on the current branch. For pushing or releasing, see "After committing".
 - The subject is one short imperative sentence saying what changed, with no prefix or trailing period, e.g. `Say how long a redemption took to confirm`.
 - Flow refuses to run on uncommitted changes, so leave the working tree either committed or clearly reported.

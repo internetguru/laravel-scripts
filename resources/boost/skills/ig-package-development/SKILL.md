@@ -13,7 +13,7 @@ The application installs `internetguru/*` packages from Packagist. Their source 
 Before building a new feature, or a reusable piece of one, decide where it lives. Prefer a package whenever it makes sense, so every application gets it and it is maintained once.
 
 1. **An existing package.** List the installed ones with `composer show 'internetguru/*'`, keep in mind the other `laravel-*` packages at `github.com/internetguru`, and read their READMEs. If the feature extends what a package already does, or is generic enough that other Internet Guru applications would use it (a Blade or Livewire component, trait, validation rule, middleware, helper, Artisan command, Sass partial, Alpine component), it goes there. `laravel-common` takes generic pieces that fit no more specific package.
-2. **A new package**, as a last resort: only for a self-contained area that no existing package covers and that more applications will need. Propose its name and scope; don't create it yourself.
+2. **A new package**, as a last resort: only for a self-contained area that no existing package covers and that more applications will need. Propose its name and scope.
 3. **The application**, for what only this application needs: its own domain models, pages, business rules and texts.
 
 A feature can split: keep the generic part in a package and the application-specific part, such as configuration, texts or a view override, in the application.
@@ -24,7 +24,7 @@ When a package change is worth considering but not made now, for example because
 
 ## Rules
 
-- Never edit `vendor/`, never copy files into it, and never add a path repository or symlink. To run unreleased package code, use the vendor mount described below.
+- To run unreleased package code, use the vendor mount described below.
 - Make the change in the package's own checkout. If you don't know where it is, ask the user for the path instead of guessing.
 - Work on the package's `dev` branch unless the user says otherwise. Packages use Flow like applications: `VERSION`, tags and merges go only through Flow, after the user agrees. Activate `ig-flow`.
 - Add a `CHANGELOG.md` entry in the same commit; activate `ig-changelog`.
@@ -32,7 +32,7 @@ When a package change is worth considering but not made now, for example because
 
 ## Running unreleased package code in the application
 
-Developers test a package change in the application by mounting the package checkout over its `vendor/` directory inside the containers. This happens in a Docker override file, never in the host's `vendor/`:
+Developers test a package change in the application by mounting the package checkout over its `vendor/` directory inside the containers, through a Docker override file:
 
 - Each developer keeps a `docker-compose.vendor.yml` next to their package checkouts (on the maintainer's machine, `composer/internetguru/docker-compose.vendor.yml`). It is personal, holds absolute paths, and is not committed.
 - For each package under test it mounts `<checkout>:/app/vendor/internetguru/<package>` on the `laravel`, `queue` and `scheduler` services. Only the packages being tested are left uncommented; the rest are commented out.

@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.0] - 2026-11-13
+
+_Stable release based on [1.6.0-rc.1]._
+
+## [1.6.0-rc.1] - 2026-11-13
+
+### Changed
+
+- Agents work on the current branch without asking when it fits the task, and ask only when they would recommend another branch or the choice is ambiguous.
+- Agents discuss the approach of a task until it is agreed before changing files, and end it with follow-ups ranked by significance, naming the most severe one.
+- Agents describe pushing or releasing only when asked, run tests for most changes except minor edits, and the guidelines drop instructions that repeated another rule.
+- For bigger tasks or on request, agents get advice and a code and UI review from the strongest model available.
+
 ## [1.5.0] - 2026-11-09
 
 _Stable release based on [1.5.0-rc.1]._
@@ -288,6 +301,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.6.0]: https://github.com/internetguru/laravel-scripts/compare/v1.5.0...v1.6.0
+[1.6.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.5.0
 [1.5.0]: https://github.com/internetguru/laravel-scripts/compare/v1.4.0...v1.5.0
 [1.5.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.4.0
 [1.4.0]: https://github.com/internetguru/laravel-scripts/compare/v1.3.0...v1.4.0
