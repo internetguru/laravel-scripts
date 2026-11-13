@@ -4,7 +4,7 @@ This application is built by Internet Guru on top of its own `internetguru/*` pa
 
 ## Boundaries
 
-- Branches, versions and releases are managed by the Flow script (`internetguru/flow`). Never change `VERSION` (except a major bump on `dev`, see `ig-flow`), version headings in `CHANGELOG.md` or tags by hand, and never merge between key branches yourself. Before starting a task, run `flow --pull` to bring in coworkers' changes, then check the current branch: if it is the one you would recommend for the task, work there without asking; ask only when you would recommend a different branch or the choice is ambiguous. A fix for the release candidate is committed on `staging`, not released again from `dev`. A commit on `staging` is always merged into `dev` (`flow --yes --conform --pull`) before it is pushed. After committing, ask whether to push or release. Run `flow` or `git push` only after the user agrees to that step. Activate `ig-flow`.
+- Branches, versions and releases are managed by the Flow script (`internetguru/flow`). Never change `VERSION` (except a major bump on `dev`, see `ig-flow`), version headings in `CHANGELOG.md` or tags by hand, and never merge between key branches yourself. Before starting a task, run `flow --pull` to bring in coworkers' changes, then check the current branch: if it is the one you would recommend for the task, work there without asking; ask only when you would recommend a different branch or the choice is ambiguous. A fix for the release candidate is committed on `staging`, not released again from `dev`. A commit on `staging` is always merged into `dev` (`flow --yes --conform --pull`) before it is pushed. After committing, describe pushing or releasing only when the user asks for git advice. Run `flow` or `git push` only after the user agrees to that step. Activate `ig-flow`.
 - Before deciding anything based on the current branch, or reporting on it, check it again with `git branch --show-current`. The developer may switch branches by hand, or a tool may switch them in the background, so the branch you saw earlier may no longer be current.
 - Never edit, copy into, or symlink anything under `vendor/`, and do not switch a package to a path repository. A change to an `internetguru/*` package belongs in that package's own repository. It runs in the application only while the developer's `docker-compose.vendor.yml` mounts that package into the containers; activate `ig-package-development`.
 - Before building a new feature, first consider whether it belongs in a package rather than the application: anything other Internet Guru applications would use, or that extends what an `internetguru/*` package already does, goes to `laravel-common` or the fitting existing package. Propose a new package only as a last resort, for a self-contained area no package covers. Say where you would put it and why, and let the user decide before writing code; activate `ig-package-development`.
@@ -15,7 +15,7 @@ This application is built by Internet Guru on top of its own `internetguru/*` pa
 
 - **Discuss first.** Before changing files, look into the task without changing anything, then present the conceptual parts (the approach, the design, the trade-offs) with the options and the one you recommend. Change files only once they are clear and agreed, so no better solution is left undiscussed. Go ahead without discussing only when the user says so. Minor slips, such as a typo, need no discussion: fix them or leave them.
 - **Review.** For a bigger task, or whenever the user asks for a review, get advice on the approach and a review of the result from the strongest model available (for example Claude Fable), through a subagent where the agent supports one. A review covers the code and, when views, styles or scripts changed, the UI. Give the reviewer the code and the screens rather than your conclusions, and discuss its findings with the user before acting on them.
-- **Follow-ups.** When a task is done, end with the follow-ups it revealed, most significant first: what else to do, fix, check or test. Name the most severe one as the one to do next. Leave Flow steps such as pushing or releasing out of it; ask about those as Boundaries describes. A follow-up the user postpones goes into Considerations.
+- **Follow-ups.** When a task is done, end with the follow-ups it revealed, most significant first: what else to do, fix, check or test. Name the most severe one as the one to do next. Leave Flow steps such as pushing or releasing out of it; see Boundaries. A follow-up the user postpones goes into Considerations.
 
 ## Considerations
 
@@ -66,7 +66,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Commits
 
-- Commit only when asked, on the current branch, then ask about pushing or releasing (see `ig-flow`). The subject is one short sentence in the imperative saying what changed, with no prefix or trailing period, e.g. `Show the status above the heading`.
+- Commit only when asked, on the current branch. Describe pushing or releasing only when the user asks for git advice (see `ig-flow`). The subject is one short sentence in the imperative saying what changed, with no prefix or trailing period, e.g. `Show the status above the heading`.
 
 ## Translations
 

@@ -1,6 +1,6 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing (to offer a push or release), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
+description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing when the user asks what to do next (to describe pushing or releasing), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 metadata:
   author: internetguru
 ---
@@ -62,7 +62,7 @@ Skip the question when the user has already said where to work, or when the task
 
 ## After committing
 
-Once the commit is made, ask the user what comes next, and say exactly what each option runs:
+Do not ask what comes next after a commit. Only when the user asks for git advice, lay out the options and say exactly what each one runs:
 
 - **Nothing yet:** leave it local.
 - **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`. On `staging`, first merge it into `dev` with `flow --yes --conform --pull`, then push both with `flow --push` (see "Work committed on `staging`"); never push `staging` alone.
@@ -73,7 +73,7 @@ Once the commit is made, ask the user what comes next, and say exactly what each
   - hotfix → a production patch: `flow --yes` on the hotfix branch
   - Follow a release with `flow --push`, if the user wants it pushed.
 
-Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Always pass `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
+Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Consider passing `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
 
 ### Work committed on `staging`
 
@@ -97,6 +97,6 @@ See `ig-changelog` for how to word an entry.
 
 ## Commits
 
-- Commit when the user asks, on the current branch, then follow "After committing".
+- Commit when the user asks, on the current branch. For pushing or releasing, see "After committing".
 - The subject is one short imperative sentence saying what changed, with no prefix or trailing period, e.g. `Say how long a redemption took to confirm`.
 - Flow refuses to run on uncommitted changes, so leave the working tree either committed or clearly reported.
