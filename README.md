@@ -59,6 +59,8 @@ The workflow takes optional `php-version` (default `8.4`) and `extensions` input
 
 New errors are fixed, not added to the baseline; the shared rules report baseline entries whose error is gone, so baselines only shrink.
 
+A project that already has a `phpstan.neon` adds the shared include and removes its own `level` and `missingType.generics` entries; otherwise PHPStan reports that entry as unmatched.
+
 ## AI guidelines
 
 The package ships [Laravel Boost](https://github.com/laravel/boost) guidelines (`resources/boost/guidelines`) and skills (`resources/boost/skills`). Boost merges them into `CLAUDE.md` / `AGENTS.md` and installs the skills.

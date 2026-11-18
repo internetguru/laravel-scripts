@@ -152,16 +152,26 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
     /** Warns about a missing PHPStan setup after `composer update`; never fails and never writes. */
     public function checkPhpstan(Event $event): void
     {
+        try {
+            $this->warnAboutPhpstan($event);
+        } catch (\Throwable) {
+            // A warning must never fail the update
+        }
+    }
+
+    private function warnAboutPhpstan(Event $event): void
+    {
         if (getenv('CI') || getenv('GITHUB_ACTIONS') || ! $event->isDevMode()) {
             return;
         }
 
         $config = self::phpstanConfig();
-        $hasLarastan = isset($event->getComposer()->getPackage()->getDevRequires()['larastan/larastan']);
+        $package = $event->getComposer()->getPackage();
+        $hasLarastan = isset($package->getDevRequires()['larastan/larastan']) || isset($package->getRequires()['larastan/larastan']);
         if ($config === null || ! $hasLarastan) {
             $this->io->writeError('<warning>PHPStan is not set up; run `composer analyse:init`.</warning>');
         } elseif (! str_contains((string) file_get_contents($config), self::SHARED_NEON)) {
-            $this->io->writeError("<warning>{$config} does not use the shared rules; add the include line `- " . self::SHARED_NEON . "`.</warning>");
+            $this->io->writeError("<warning>{$config} does not use the shared rules; add the include line `- " . self::SHARED_NEON . "` and remove your own `level` and `missingType.generics` entries.</warning>");
         }
         if (! self::callsSharedWorkflow()) {
             $this->io->writeError('<warning>No CI workflow calls the shared PHPStan workflow (' . self::SHARED_WORKFLOW . ').</warning>');
@@ -170,7 +180,7 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
 
     private static function phpstanConfig(): ?string
     {
-        foreach (['phpstan.neon', 'phpstan.neon.dist'] as $file) {
+        foreach (['phpstan.neon', 'phpstan.neon.dist', 'phpstan.dist.neon'] as $file) {
             if (file_exists($file)) {
                 return $file;
             }
@@ -181,7 +191,8 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
 
     private static function callsSharedWorkflow(): bool
     {
-        foreach (glob('.github/workflows/*.{yml,yaml}', GLOB_BRACE) ?: [] as $workflow) {
+        $workflows = array_merge(glob('.github/workflows/*.yml') ?: [], glob('.github/workflows/*.yaml') ?: []);
+        foreach ($workflows as $workflow) {
             if (str_contains((string) file_get_contents($workflow), self::SHARED_WORKFLOW)) {
                 return true;
             }
