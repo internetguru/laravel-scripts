@@ -1,0 +1,6 @@
+includes:
+    - phpstan/ig.neon
+
+parameters:
+    paths:
+        - src/

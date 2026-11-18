@@ -53,7 +53,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Before finishing
 
-- Run `vendor/bin/pint --dirty --format agent`, the affected test files (see Testing), and `vendor/bin/phpstan analyse` (Larastan, level 8, `app/`). Fix new PHPStan errors instead of adding them to `ignoreErrors` or the baseline. If the project has no `phpstan.neon` yet, say so; do not install Larastan without approval.
+- Run `vendor/bin/pint --dirty --format agent`, the affected test files (see Testing), and `composer analyse` (Larastan, level 8, with the shared rules from `laravel-scripts`). CI runs PHPStan on every push to `dev`, `staging` and production and fails on any new error. Fix new PHPStan errors instead of adding them to `ignoreErrors` or the baseline; baselines only shrink, so remove an entry once its error is fixed. If the project has no `phpstan.neon` yet, say so and suggest `composer analyse:init`; do not install Larastan without approval.
 - After changing translations, run `./validate_trans.sh` and `./langdiff.sh` if the project has them.
 
 ## Frontend

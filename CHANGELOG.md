@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Shared PHPStan rules in `phpstan/ig.neon` (level 8) and a reusable GitHub workflow that every Internet Guru repository calls to run PHPStan in CI.
+- `composer analyse` runs PHPStan and `composer analyse:init` writes a `phpstan.neon` with the shared rules.
+- After `composer update`, a warning appears when the project has no PHPStan setup, does not include the shared rules, or has no CI workflow calling the shared one.
+
+### Changed
+
+- Agents run `composer analyse` before finishing and remove baseline entries once their error is fixed.
+
 ## [1.6.0] - 2026-11-13
 
 _Stable release based on [1.6.0-rc.1]._
