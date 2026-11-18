@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0] - 2026-11-18
+
+_Stable release based on [1.7.0-rc.1]._
+
+## [1.7.0-rc.1] - 2026-11-18
+
+### Added
+
+- Shared PHPStan rules in `phpstan/ig.neon` (level 8) and a reusable GitHub workflow that every Internet Guru repository calls to run PHPStan in CI.
+- `composer analyse` runs PHPStan and `composer analyse:init` writes a `phpstan.neon` with the shared rules.
+- After `composer update`, a warning appears when the project has no PHPStan setup, does not include the shared rules, or has no CI workflow calling the shared one.
+
+### Changed
+
+- Agents run `composer analyse` before finishing and remove baseline entries once their error is fixed.
+
 ## [1.6.0] - 2026-11-13
 
 _Stable release based on [1.6.0-rc.1]._
@@ -301,6 +317,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.7.0]: https://github.com/internetguru/laravel-scripts/compare/v1.6.0...v1.7.0
+[1.7.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.6.0
 [1.6.0]: https://github.com/internetguru/laravel-scripts/compare/v1.5.0...v1.6.0
 [1.6.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.5.0
 [1.5.0]: https://github.com/internetguru/laravel-scripts/compare/v1.4.0...v1.5.0
