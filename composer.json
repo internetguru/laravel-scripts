@@ -18,5 +18,17 @@
     },
     "extra": {
         "class": "InternetGuru\\LaravelScripts\\ComposerPlugin"
+    },
+    "require-dev": {
+        "composer/composer": "^2",
+        "phpstan/phpstan": "^2"
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4.0"
+        }
     }
 }

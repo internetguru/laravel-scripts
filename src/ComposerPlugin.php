@@ -25,7 +25,13 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
         'test:browser' => 'Run the browser tests one at a time',
         'test:all' => 'Run the PHP tests, then the browser tests',
         'list:scripts' => 'List these scripts with what they do',
+        'analyse' => 'Run PHPStan (Larastan) on the project, in the laravel container when there is one',
+        'analyse:init' => 'Write a phpstan.neon with the shared Internet Guru rules and an empty baseline',
     ];
+
+    public const SHARED_NEON = 'vendor/internetguru/laravel-scripts/phpstan/ig.neon';
+
+    public const SHARED_WORKFLOW = 'internetguru/laravel-scripts/.github/workflows/phpstan.yml';
 
     // Playwright's Chromium paths follow its version, so they are linked again before each run (docker-ansible image)
     private const LINK_CHROMIUM = 'docker compose exec laravel sh -c "command -v playwright-chromium-link >/dev/null && playwright-chromium-link || true"';
@@ -85,6 +91,13 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
                     . ' && if [ -d tests/Browser ]; then docker compose exec laravel php artisan test $b --testsuite=Browser @additional_args; fi'
             ],
             'list:scripts' => [self::class . '::listScripts'],
+            'analyse' => [
+                'Composer\\Config::disableProcessTimeout',
+                // Packages have no Docker stack, so they run PHPStan with the local PHP
+                (file_exists('docker-compose.yml') ? 'docker compose exec laravel ' : '')
+                    . 'vendor/bin/phpstan analyse --memory-limit=1G @additional_args',
+            ],
+            'analyse:init' => [self::class . '::initPhpstan'],
         ];
         ksort($scripts);
 
@@ -104,6 +117,90 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
         }
     }
 
+    /** Writes only files that do not exist yet and prints the remaining steps. */
+    public static function initPhpstan(Event $event): void
+    {
+        $io = $event->getIO();
+        $path = is_dir('app') ? 'app/' : 'src/';
+
+        if (self::phpstanConfig() === null) {
+            file_put_contents('phpstan.neon', "includes:\n"
+                . "    - vendor/larastan/larastan/extension.neon\n"
+                . '    - ' . self::SHARED_NEON . "\n"
+                . "    - phpstan-baseline.neon\n\n"
+                . "parameters:\n"
+                . "    paths:\n"
+                . "        - {$path}\n");
+            $io->write('<info>Wrote phpstan.neon</info>');
+        }
+        if (! file_exists('phpstan-baseline.neon')) {
+            file_put_contents('phpstan-baseline.neon', "parameters:\n    ignoreErrors: []\n");
+            $io->write('<info>Wrote an empty phpstan-baseline.neon</info>');
+        }
+
+        $steps = [];
+        if (! isset($event->getComposer()->getPackage()->getDevRequires()['larastan/larastan'])) {
+            $steps[] = 'composer require --dev larastan/larastan';
+        }
+        $steps[] = 'composer analyse -- --generate-baseline';
+        if (! self::callsSharedWorkflow()) {
+            $steps[] = 'add .github/workflows/phpstan.yml calling ' . self::SHARED_WORKFLOW . '@main (see the laravel-scripts README)';
+        }
+        $io->write('Next: ' . implode(', then ', $steps));
+    }
+
+    /** Warns about a missing PHPStan setup after `composer update`; never fails and never writes. */
+    public function checkPhpstan(Event $event): void
+    {
+        try {
+            $this->warnAboutPhpstan($event);
+        } catch (\Throwable) {
+            // A warning must never fail the update
+        }
+    }
+
+    private function warnAboutPhpstan(Event $event): void
+    {
+        if (getenv('CI') || getenv('GITHUB_ACTIONS') || ! $event->isDevMode()) {
+            return;
+        }
+
+        $config = self::phpstanConfig();
+        $package = $event->getComposer()->getPackage();
+        $hasLarastan = isset($package->getDevRequires()['larastan/larastan']) || isset($package->getRequires()['larastan/larastan']);
+        if ($config === null || ! $hasLarastan) {
+            $this->io->writeError('<warning>PHPStan is not set up; run `composer analyse:init`.</warning>');
+        } elseif (! str_contains((string) file_get_contents($config), self::SHARED_NEON)) {
+            $this->io->writeError("<warning>{$config} does not use the shared rules; add the include line `- " . self::SHARED_NEON . "` and remove your own `level` and `missingType.generics` entries.</warning>");
+        }
+        if (! self::callsSharedWorkflow()) {
+            $this->io->writeError('<warning>No CI workflow calls the shared PHPStan workflow (' . self::SHARED_WORKFLOW . ').</warning>');
+        }
+    }
+
+    private static function phpstanConfig(): ?string
+    {
+        foreach (['phpstan.neon', 'phpstan.neon.dist', 'phpstan.dist.neon'] as $file) {
+            if (file_exists($file)) {
+                return $file;
+            }
+        }
+
+        return null;
+    }
+
+    private static function callsSharedWorkflow(): bool
+    {
+        $workflows = array_merge(glob('.github/workflows/*.yml') ?: [], glob('.github/workflows/*.yaml') ?: []);
+        foreach ($workflows as $workflow) {
+            if (str_contains((string) file_get_contents($workflow), self::SHARED_WORKFLOW)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getCapabilities(): array
     {
         return [CommandProvider::class => ScriptCommands::class];
@@ -121,7 +218,7 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
 
     public static function getSubscribedEvents(): array
     {
-        return [ScriptEvents::POST_UPDATE_CMD => 'refreshBoost'];
+        return [ScriptEvents::POST_UPDATE_CMD => [['refreshBoost', 0], ['checkPhpstan', 0]]];
     }
 
     public function refreshBoost(): void

@@ -21,6 +21,45 @@ The plugin adds these scripts to the application. They run in its Docker stack (
 | `test:all` | Run the PHP tests, then the browser tests |
 | `test:browser` | Run the browser tests one at a time |
 | `test:php` | Run the PHP tests (Unit and Feature) in parallel |
+| `analyse` | Run PHPStan, in the `laravel` container when the project has a `docker-compose.yml`, otherwise with the local PHP; `composer analyse -- --generate-baseline` regenerates the baseline |
+| `analyse:init` | Write a `phpstan.neon` with the shared rules and an empty baseline when they are missing, and print the remaining steps |
+
+## PHPStan
+
+Every Internet Guru application and package runs [Larastan](https://github.com/larastan/larastan) at level 8 with the shared rules in `phpstan/ig.neon`. Each project keeps Larastan in its own `require-dev` (`composer require --dev larastan/larastan`; a package also requires this package as a dev dependency and allows its plugin), and a `phpstan.neon` with its own paths and baseline:
+
+```neon
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/internetguru/laravel-scripts/phpstan/ig.neon
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app/   # src/ in a package
+```
+
+CI runs it through the shared workflow in this repository. Add `.github/workflows/phpstan.yml` to the project:
+
+```yaml
+name: PHPStan
+
+on:
+  push:
+    branches: [dev, staging, main, master]
+  pull_request:
+    branches: [dev, staging, main, master]
+
+jobs:
+  phpstan:
+    uses: internetguru/laravel-scripts/.github/workflows/phpstan.yml@main
+```
+
+The workflow takes optional `php-version` (default `8.4`) and `extensions` inputs. After every `composer update`, the plugin warns when the project has no PHPStan setup, does not include the shared rules, or has no workflow calling the shared one. It never fails the update, and it stays quiet in CI and under `--no-dev`.
+
+New errors are fixed, not added to the baseline; the shared rules report baseline entries whose error is gone, so baselines only shrink.
+
+A project that already has a `phpstan.neon` adds the shared include and removes its own `level` and `missingType.generics` entries; otherwise PHPStan reports that entry as unmatched.
 
 ## AI guidelines
 

@@ -1,0 +1,8 @@
+# Shared Internet Guru PHPStan rules. Include it from the project's phpstan.neon,
+# after vendor/larastan/larastan/extension.neon; paths and the baseline stay in the project.
+parameters:
+    level: 8
+    ignoreErrors:
+        -
+            identifier: missingType.generics
+            reportUnmatched: false
