@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Agents hotfix an older major (`main-N`) by hand while Flow cannot do it.
 - "Release to production" from `dev` runs the release candidate and the production release in one go when `staging` holds no unreleased candidate.
+- Agents delete a merged hotfix branch, local and remote, when Flow leaves it behind.
 
 ## [1.7.0] - 2026-11-18
 
