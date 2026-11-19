@@ -33,8 +33,18 @@ How a change moves:
 Edit `VERSION` only on `dev`, when a breaking change requires a new major version (see below). Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
 
 - Add, rename or date a version heading (`## [2.11.0] - 2026-09-15`, `## [2.11.0-rc.6]`), add the `_Stable release based on …_` note, or edit the compare links at the bottom of `CHANGELOG.md`.
-- Create tags, or merge, rebase or cherry-pick between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
+- Create tags, or merge or rebase between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
 - Write or amend commits named `Update changelog`, `Update changelog and increment version`, `Update changelog and restore version` or `Update control files`. These are Flow's.
+
+## Hotfixing an older major
+
+Flow does not support hotfixing an older major (`main-N`) yet (Flow 3.3.0). Its code handles it (`flow main-N`, hotfix branches merged into `main-N`), but it does not work in practice: do not use Flow for it, even if it looks supported. Until a Flow release explicitly announces working `main-N` hotfixes in its changelog (github.com/internetguru/flow), do the hotfix by hand, as an exception to "Only through Flow":
+
+1. Branch from `main-N` and commit the fix with its changelog entry.
+2. Bump the patch version in `VERSION`, add the version heading and compare link the way Flow would.
+3. Merge into `main-N`, tag `vX.Y.Z`, and delete the hotfix branch.
+
+Do each step only after the user approves it. Before every such hotfix, check Flow's changelog first. Once a release announces the support, use Flow and remove this section from `ig-flow` (from an application, tell the user instead, since the skill comes from `internetguru/laravel-scripts`).
 
 ## Major version
 
@@ -52,7 +62,7 @@ First run `flow --pull` in the repository. Coworkers push to the same branches, 
 Then check the current branch (`git branch --show-current`) and decide where the work belongs before changing any file. If the current branch is the one you would recommend, work there without asking and mention it in one line. Ask the user only when you would recommend a different branch or the choice is ambiguous; then offer the option that fits, and recommend one:
 
 - **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
-- **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master` (or from `main-N` for an older major).
+- **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master`. For an older major, see "Hotfixing an older major".
 - **A fix for the release candidate on `staging`** (it fails in testing or does not deploy): commit it directly on `staging`, see "Work committed on `staging`". Never commit it on `dev` and run `flow` there for a new candidate: that adds an `-rc.N` with nothing but the fix, and ships whatever else waits on `dev` along with it.
 - **Already on a feature or hotfix branch:** continue there, unless the task is unrelated.
 
@@ -67,6 +77,8 @@ When the user asks for git advice, lay out the options and say exactly what each
   - `dev` → a release candidate on `staging`: `flow --yes`
   - `staging` → production, tagged `vX.Y.Z`: `flow --yes --conform` on `staging` (see below)
   - hotfix → a production patch: `flow --yes` on the hotfix branch
+    - Flow then deletes the hotfix branch, local and remote. If it is left behind (Flow stopped, e.g. on conflicts) and is fully merged into its production branch (`git branch --merged <production>` lists it), delete it yourself: `git branch -d <branch>`, and `git push origin --delete <branch>` if it exists on origin. Mention it in one line. Never force with `-D`; an unmerged branch is not yours to delete.
+  - "Release to production" from `dev` when `staging` holds no unreleased candidate (it equals production) covers both steps: `flow --yes` on `dev`, then `flow --yes --conform` on `staging`. Say in one line that this skips testing on `staging`. If `staging` holds an untested candidate, ask first.
   - Follow a release with `flow --push`, if the user wants it pushed.
 
 Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Consider passing `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
