@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.8.0] - 2026-11-19
+
+_Stable release based on [1.8.0-rc.1]._
+
+## [1.8.0-rc.1] - 2026-11-19
+
+### Changed
+
+- Agents hotfix an older major (`main-N`) by hand while Flow cannot do it.
+- "Release to production" from `dev` runs the release candidate and the production release in one go when `staging` holds no unreleased candidate.
+- Agents delete a merged hotfix branch, local and remote, when Flow leaves it behind.
+
 ## [1.7.0] - 2026-11-18
 
 _Stable release based on [1.7.0-rc.1]._
@@ -317,6 +329,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.8.0]: https://github.com/internetguru/laravel-scripts/compare/v1.7.0...v1.8.0
+[1.8.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.7.0
 [1.7.0]: https://github.com/internetguru/laravel-scripts/compare/v1.6.0...v1.7.0
 [1.7.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.6.0
 [1.6.0]: https://github.com/internetguru/laravel-scripts/compare/v1.5.0...v1.6.0
