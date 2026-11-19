@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents hotfix an older major (`main-N`) by hand while Flow cannot do it.
+- "Release to production" from `dev` runs the release candidate and the production release in one go when `staging` holds no unreleased candidate.
+
 ## [1.7.0] - 2026-11-18
 
 _Stable release based on [1.7.0-rc.1]._
