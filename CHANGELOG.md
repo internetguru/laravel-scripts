@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The Flow and changelog rules apply only to repositories that use them: agents skip Flow where there is no `VERSION` file and `dev` branch, and write no changelog where there is no `CHANGELOG.md`.
+
 ## [1.9.0] - 2026-11-22
 
 _Stable release based on [1.9.0-rc.1]._
