@@ -1,6 +1,6 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing when the user asks what to do next (to describe pushing or releasing), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
+description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing (to offer pushing or releasing), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 metadata:
   author: internetguru
 ---
@@ -105,6 +105,6 @@ See `ig-changelog` for how to word an entry.
 
 ## Commits
 
-- Commit when the user asks, on the current branch. For pushing or releasing, see "After committing".
+- Commit finished changes yourself, on the current branch. Pushing and releasing still need the user's yes, see "After committing".
 - The subject is one short imperative sentence saying what changed, with no prefix or trailing period, e.g. `Say how long a redemption took to confirm`.
-- Flow refuses to run on uncommitted changes, so leave the working tree either committed or clearly reported.
+- Flow refuses to run on uncommitted changes, so commit finished work and report anything left uncommitted on purpose.

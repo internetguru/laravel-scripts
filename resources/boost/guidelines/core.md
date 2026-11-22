@@ -66,7 +66,7 @@ The full suite takes minutes, so running it is not the agent's job.
 
 ## Commits
 
-- Commit only when asked, on the current branch. The subject is one short sentence in the imperative saying what changed, with no prefix or trailing period, e.g. `Show the status above the heading`.
+- Commit on your own when a change is done and checked (pint, the affected tests and analyse pass), on the current branch, one logical change per commit. The subject is one short sentence in the imperative saying what changed, with no prefix or trailing period, e.g. `Show the status above the heading`.
 
 ## Translations
 
