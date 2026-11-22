@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Agents commit finished, checked changes on their own; pushing and releasing still need approval.
+
 ## [1.8.0] - 2026-11-19
 
 _Stable release based on [1.8.0-rc.1]._
