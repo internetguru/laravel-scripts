@@ -1,5 +1,9 @@
 # Shared Internet Guru PHPStan rules. Include it from the project's phpstan.neon,
 # after vendor/larastan/larastan/extension.neon; paths and the baseline stay in the project.
+includes:
+    # Carbon macros, such as laravel-common's toDisplayTimezone(), resolved from the booted application
+    - ../../../nesbot/carbon/extension.neon
+
 parameters:
     level: 8
     ignoreErrors:

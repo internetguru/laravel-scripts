@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.0] - 2026-11-22
+
+_Stable release based on [1.10.0-rc.1]._
+
+## [1.10.0-rc.1] - 2026-11-22
+
+### Changed
+
+- The shared PHPStan rules include Carbon's extension, so Carbon macros such as `toDisplayTimezone()` are known; drop their entries from the project's baseline after updating.
+- The Flow and changelog rules apply only to repositories that use them: agents skip Flow where there is no `VERSION` file and `dev` branch, and write no changelog where there is no `CHANGELOG.md`.
+
 ## [1.9.0] - 2026-11-22
 
 _Stable release based on [1.9.0-rc.1]._
@@ -339,6 +350,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.10.0]: https://github.com/internetguru/laravel-scripts/compare/v1.9.0...v1.10.0
+[1.10.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.9.0
 [1.9.0]: https://github.com/internetguru/laravel-scripts/compare/v1.8.0...v1.9.0
 [1.9.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.8.0
 [1.8.0]: https://github.com/internetguru/laravel-scripts/compare/v1.7.0...v1.8.0
