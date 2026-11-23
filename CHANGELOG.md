@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- The shared PHPStan rules include Carbon's extension, so Carbon macros such as `toDisplayTimezone()` are known; drop their entries from the project's baseline after updating.
 - The Flow and changelog rules apply only to repositories that use them: agents skip Flow where there is no `VERSION` file and `dev` branch, and write no changelog where there is no `CHANGELOG.md`.
 
 ## [1.9.0] - 2026-11-22
