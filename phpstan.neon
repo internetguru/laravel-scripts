@@ -1,5 +1,6 @@
 includes:
-    - phpstan/ig.neon
+    # The shared rules without the Carbon extension, which resolves only from a project's vendor
+    - phpstan/rules.neon
 
 parameters:
     paths:
