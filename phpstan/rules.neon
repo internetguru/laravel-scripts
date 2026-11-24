@@ -1,0 +1,7 @@
+# Shared Internet Guru PHPStan rules without extensions, so this repository can check itself with them.
+parameters:
+    level: 8
+    ignoreErrors:
+        -
+            identifier: missingType.generics
+            reportUnmatched: false

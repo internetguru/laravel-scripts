@@ -3,10 +3,4 @@
 includes:
     # Carbon macros, such as laravel-common's toDisplayTimezone(), resolved from the booted application
     - ../../../nesbot/carbon/extension.neon
-
-parameters:
-    level: 8
-    ignoreErrors:
-        -
-            identifier: missingType.generics
-            reportUnmatched: false
+    - rules.neon
