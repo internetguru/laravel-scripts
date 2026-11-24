@@ -1,110 +1,63 @@
 ---
 name: ig-flow
-description: "Branches, versions and releases in Internet Guru repositories, which are managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull coworkers' changes with `flow --pull` and offer a feature or hotfix branch when the current one does not fit), after committing (to offer pushing or releasing), before committing, before touching VERSION or a CHANGELOG.md version heading, when deciding which branch a change belongs on, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
-metadata:
-  author: internetguru
+description: "Branches, versions and releases in Internet Guru repositories, managed by the Flow script (github.com/internetguru/flow). Activate before starting a task (to pull with `flow --pull` and pick the branch), before committing, after committing (to offer pushing or releasing), before touching VERSION or a CHANGELOG.md version heading, when the user mentions a release, release candidate, hotfix, feature branch, tag or `flow`, or when git history shows commits like 'Update changelog' or 'Update control files'."
 ---
+
 # Flow
 
-Every Internet Guru application and package uses [Flow](https://github.com/internetguru/flow), a git-flow script, for branching, versioning and releases. Flow owns `VERSION`, the version headings and compare links in `CHANGELOG.md`, the tags, and every merge between key branches. Developers run it by hand; `flow -h` and `man flow` describe it.
+Every Internet Guru repository with a `VERSION` file and a `dev` branch is managed by [Flow](https://github.com/internetguru/flow), a git-flow script.
 
-## Branches
+## Model
 
-| Branch | Holds | `VERSION` |
+| Branch | Holds |
+| --- | --- |
+| `dev` | Ongoing development; `VERSION` is the next minor |
+| `staging` | The release candidate under test |
+| `main` or `master` | Production; every release is tagged `vX.Y.Z` |
+| `main-N` or `master-N` | Production line of an older major N |
+| feature | One feature, from `dev` |
+| hotfix | One fix, from production |
+
+A change moves feature → `dev` → `staging` → production; a hotfix goes straight to production and is merged down.
+
+## Use the `flow` command
+
+- Flow owns `VERSION`, the version headings and compare links in `CHANGELOG.md`, the tags, and every merge between the branches above. Never do these by hand, and never write or amend Flow's commits (`Update changelog…`, `Update control files`).
+- The one exception is a major bump, when a breaking change requires it and the user decides to: a plain `VERSION` edit on `dev`, committed alone, e.g. `Start version 4.0.0`.
+- Commit finished changes yourself, on the current branch. After committing, offer to push or release and say exactly what each runs.
+- Run a Flow command only after the user agrees to that specific step; approving one step does not approve the next. Pass `--yes`, since there is no terminal for Flow's prompts.
+- A non-zero exit stops the sequence: report it. Never retry with `--force`, and use `--conform` only on `staging`, unless the user asks.
+- Changelog entries go under `[Unreleased]` on `dev`, feature and hotfix branches, and under the current release candidate heading on `staging` (see `ig-changelog`).
+
+## Common commands
+
+Check the major version first with `flow -V`.
+
+The same in Flow 3 and 4:
+
+| Task | Command |
+| --- | --- |
+| Before a task: update all branches | `flow --pull` (needs a clean tree; ask about uncommitted changes) |
+| Advance the current branch: feature → `dev`, `dev` → candidate on `staging`, `staging` → production, hotfix → patch release | `flow --yes` |
+| Push work committed on `staging` | `flow --yes --conform --pull`, then `flow --push` |
+| Release `staging` with its own commits | `flow --yes --conform` on `staging` |
+| Push all branches and tags | `flow --push` |
+
+What differs:
+
+| Task | Flow 3 | Flow 4 |
 | --- | --- | --- |
-| `dev` | Ongoing development | Next minor, e.g. `2.12.0` |
-| `staging` | The release candidate under test | Candidate, e.g. `2.11.0`, with changelog heading `[2.11.0-rc.5]` |
-| `main` or `master` | Production; every release is tagged `vX.Y.Z` | Released, e.g. `2.10.2` |
-| `main-N` / `master-N` | Production line of major version N, for hotfixing an older major | Released |
-| `feature-<user>` or any other name | One feature, branched from `dev` | As `dev` |
-| `hotfix-<user>` | One fix, branched from production | As production |
+| Start a feature | `flow --yes NAME` on `dev` | `flow --yes NAME` on `dev` (a name is required) |
+| Start a hotfix | `flow --yes hotfix` | `flow --yes -b main` or `flow --yes -b main NAME` |
+| Act on another branch | `flow --yes BRANCH` | `flow --yes -b BRANCH` |
+| Hotfix an older major | by hand before 3.3; read Flow's changelog | `flow --yes -b main-N` |
 
-Some repositories use `main`, others `master`; follow what exists.
+In Flow 4 the argument is always a new branch name; an existing branch is given with `-b`.
 
-How a change moves:
-
-- `flow <name>` on `dev` creates a feature branch, and `flow` on that branch merges it back into `dev`.
-- `flow` on `dev` creates or increments the release candidate on `staging` and bumps `dev` to the next minor.
-- `flow` on `staging` releases to production, tags it, and advances `main-N`.
-- `flow hotfix` on production creates `hotfix-<user>`, and `flow` on it releases a patch version to production and merges it back down.
-
-## Only through Flow
-
-Edit `VERSION` only on `dev`, when a breaking change requires a new major version (see below). Never do any of these by hand. Flow does them, and doing them yourself breaks its validation:
-
-- Add, rename or date a version heading (`## [2.11.0] - 2026-09-15`, `## [2.11.0-rc.6]`), add the `_Stable release based on …_` note, or edit the compare links at the bottom of `CHANGELOG.md`.
-- Create tags, or merge or rebase between `dev`, `staging`, production, `main-N`, feature and hotfix branches.
-- Write or amend commits named `Update changelog`, `Update changelog and increment version`, `Update changelog and restore version` or `Update control files`. These are Flow's.
-
-## Hotfixing an older major
-
-Flow does not support hotfixing an older major (`main-N`) yet (Flow 3.3.0). Its code handles it (`flow main-N`, hotfix branches merged into `main-N`), but it does not work in practice: do not use Flow for it, even if it looks supported. Until a Flow release explicitly announces working `main-N` hotfixes in its changelog (github.com/internetguru/flow), do the hotfix by hand, as an exception to "Only through Flow":
-
-1. Branch from `main-N` and commit the fix with its changelog entry.
-2. Bump the patch version in `VERSION`, add the version heading and compare link the way Flow would.
-3. Merge into `main-N`, tag `vX.Y.Z`, and delete the hotfix branch.
-
-Do each step only after the user approves it. Before every such hotfix, check Flow's changelog first. Once a release announces the support, use Flow and remove this section from `ig-flow` (from an application, tell the user instead, since the skill comes from `internetguru/laravel-scripts`).
-
-## Major version
-
-Flow raises only minor and patch versions on its own; it has no major option. A major bump is a plain edit of `VERSION` on `dev`, e.g. `0.30.0` to `1.0.0`, committed on its own (`Start version 1.0.0`). Flow accepts it because it only checks that `dev` is not below the next minor of `staging`; the next `flow` on `dev` then releases `1.0.0-rc.1`.
-
-- Bump only on `dev`, when a breaking change requires it and the user decides to. A major says something broke for whoever depends on the code: a package's public API, or an application's deploy or data in a way a plain release can't handle. Moving an application from `0.x` to `1.0.0` is the user's call about the project, not a consequence of one change.
-- Mark what breaks with a `**Breaking:**` entry under `[Unreleased]` (see `ig-changelog`).
+For anything else, read `flow -h`, `man flow`, or the [Flow repository](https://github.com/internetguru/flow) and its changelog. Do not guess.
 
 ## Before starting a task
 
-First run `flow --pull` in the repository. Coworkers push to the same branches, and it brings every local branch up to date with origin (fast-forward only) before anything changes. It needs a clean working tree. If there are uncommitted changes (exit 5), ask the user how to handle them instead of stashing or discarding. A failed fast-forward means the branches have diverged: report it and don't merge on your own. When working across an application and its packages, pull each repository you are about to change.
-
-`flow --pull` checks out every remote branch in turn. If an old branch still tracks a file that docker-ansible now generates (`docker-compose.yml`, `Dockerfile`), Git replaces the ignored local copy with that branch's version and then deletes it when switching back. After pulling an application, check that `Dockerfile` and `docker-compose*.yml` still exist. If one is gone, tell the user the local stack needs redeploying with docker-ansible (`./run.sh deploy <group> <domain>`, plus `-f …/docker-compose.vendor.yml` if they test packages); don't recreate it by hand.
-
-Then check the current branch (`git branch --show-current`) and decide where the work belongs before changing any file. If the current branch is the one you would recommend, work there without asking and mention it in one line. Ask the user only when you would recommend a different branch or the choice is ambiguous; then offer the option that fits, and recommend one:
-
-- **A new feature on `dev`:** work directly on `dev`, or create a feature branch with `flow --yes <name>` (a short kebab-case name; `flow --yes feature` gives `feature-<user>`).
-- **A fix for production:** create a hotfix branch with `flow --yes hotfix` from `main`/`master`. For an older major, see "Hotfixing an older major".
-- **A fix for the release candidate on `staging`** (it fails in testing or does not deploy): commit it directly on `staging`, see "Work committed on `staging`". Never commit it on `dev` and run `flow` there for a new candidate: that adds an `-rc.N` with nothing but the fix, and ships whatever else waits on `dev` along with it.
-- **Already on a feature or hotfix branch:** continue there, unless the task is unrelated.
-
-## After committing
-
-When the user asks for git advice, lay out the options and say exactly what each one runs:
-
-- **Nothing yet:** leave it local.
-- **Push:** `flow --push` pushes all branches and tags. Or push only the current branch with `git push origin <branch>`. On `staging`, first merge it into `dev` with `flow --yes --conform --pull`, then push both with `flow --push` (see "Work committed on `staging`"); never push `staging` alone.
-- **Release**, per branch:
-  - feature → `dev`: `flow --yes`
-  - `dev` → a release candidate on `staging`: `flow --yes`
-  - `staging` → production, tagged `vX.Y.Z`: `flow --yes --conform` on `staging` (see below)
-  - hotfix → a production patch: `flow --yes` on the hotfix branch
-    - Flow then deletes the hotfix branch, local and remote. If it is left behind (Flow stopped, e.g. on conflicts) and is fully merged into its production branch (`git branch --merged <production>` lists it), delete it yourself: `git branch -d <branch>`, and `git push origin --delete <branch>` if it exists on origin. Mention it in one line. Never force with `-D`; an unmerged branch is not yours to delete.
-  - "Release to production" from `dev` when `staging` holds no unreleased candidate (it equals production) covers both steps: `flow --yes` on `dev`, then `flow --yes --conform` on `staging`. Say in one line that this skips testing on `staging`. If `staging` holds an untested candidate, ask first.
-  - Follow a release with `flow --push`, if the user wants it pushed.
-
-Run a Flow command only after the user says yes to that specific step. Approval for one step does not cover the next: releasing a candidate to `staging` is not approval to release to production. Consider passing `--yes`, because Flow's confirmations need a terminal you don't have. A non-zero exit (3 nonconforming, 5 uncommitted changes, 6 nothing to do, 7 merge conflicts) stops the sequence: report it and don't retry with `--force`, or with `--conform` outside `staging`, unless the user asks.
-
-### Work committed on `staging`
-
-Commits made directly on `staging` are not in `dev` yet, and until they are, every Flow command stops with exit 3 ("Branch 'staging' is not merged into 'dev'", or "Missing or invalid version file on staging" when `staging` holds no release candidate yet). On `staging`, `--conform` is the expected way through:
-
-1. Once the user approves pushing or releasing the commit, first run `flow --yes --conform --pull`, every time, also when only pushing: a push that leaves `staging` unmerged leaves `dev` behind and blocks the next Flow command. It merges `staging` into `dev` and stops without releasing. If `staging` held no candidate, it turns it into one: `VERSION` becomes the next minor and an empty `## [X.Y.0-rc.1]` heading appears in `CHANGELOG.md`. To only push, follow it with `flow --push` and stop here.
-2. Write the entries for everything on the candidate under that heading and commit them. A candidate is never released with an empty section.
-3. Release `staging` to production with `flow --yes --conform`.
-
-## Changelog entries per branch
-
-Where an entry goes depends on the branch you are on (`git branch --show-current`):
-
-- **`dev`**: under `## [Unreleased]`, in the same commit as the change.
-- **`staging`**: under the topmost heading, the current release candidate (e.g. `## [2.11.0-rc.5]`). Do not create an `[Unreleased]` section there. If the topmost heading is a released version, `staging` holds no candidate yet: never write under it, run `flow --yes --conform --pull` first (see "Work committed on `staging`") and write under the new `-rc.1` heading.
-- **Feature or hotfix branch**: under `## [Unreleased]`, in the same commit as the change, like on `dev`. On a hotfix branch, add the `[Unreleased]` heading above the topmost version when it is missing. Flow turns it into the release heading when it merges the branch.
-  - Flow (`--changelog=auto`, the default) prompts for an entry only when the branch adds none. If it does, the entry is missing: stop, write it, commit and run `flow --yes` again. For a branch with no visible change (a refactor, tests), release it with `flow --yes --changelog=never` so Flow adds no generic entry.
-- **Production or `main-N`**: do not commit there. Offer a hotfix branch instead (see "Before starting a task").
-
-See `ig-changelog` for how to word an entry.
-
-## Commits
-
-- Commit finished changes yourself, on the current branch. Pushing and releasing still need the user's yes, see "After committing".
-- The subject is one short imperative sentence saying what changed, with no prefix or trailing period, e.g. `Say how long a redemption took to confirm`.
-- Flow refuses to run on uncommitted changes, so commit finished work and report anything left uncommitted on purpose.
+1. Run `flow --pull`. If it fails to fast-forward, the branches have diverged: report it and do not merge.
+2. After pulling an application, check that `Dockerfile` and `docker-compose*.yml` still exist. If one is gone, tell the user to redeploy with docker-ansible; do not recreate it.
+3. Check the branch with `git branch --show-current`. Work there if it fits the task. Otherwise recommend one and ask: a new feature branch on `dev`, a hotfix from production, or `staging` for a fix of the release candidate. Never commit on production.
