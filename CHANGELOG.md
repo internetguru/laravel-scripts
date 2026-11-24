@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - The `ig-flow` skill is shorter: the shared rules and common commands, a Flow 3 versus Flow 4 table for what differs, and Flow's own help for anything else.
+- The shared PHPStan workflow checks out the code with `actions/checkout@v5`, so runs no longer warn that Node.js 20 is deprecated.
 
 ## [1.10.0] - 2026-11-22
 
