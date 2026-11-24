@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The `ig-flow` skill is shorter: the shared rules and common commands, a Flow 3 versus Flow 4 table for what differs, and Flow's own help for anything else.
+
 ## [1.10.0] - 2026-11-22
 
 _Stable release based on [1.10.0-rc.1]._
