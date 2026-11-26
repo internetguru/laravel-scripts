@@ -45,6 +45,19 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
         . ' && b="--parallel --processes=$(( n < 4 ? n : 4 ))"'
         . ' && for i in $(seq 1 $n); do cp database/testing.sqlite database/testing.sqlite_test_$i; done; fi';
 
+    /**
+     * The queue and the scheduler hold the SQLite file open, and writing to it while it is recreated corrupts it, so
+     * they stop for the while; Octane's workers held the deleted file and reload onto the new one (the container keeps
+     * running, with the Vite dev server in it). Without a TTY (`-T`), so an agent or a CI job can run it too.
+     */
+    private const MIGRATE_FRESH = 'workers=$(docker compose config --services 2>/dev/null | grep -xE "queue|scheduler" | tr "\\n" " ")'
+        . '; { [ -z "$workers" ] || docker compose stop $workers; }'
+        . ' && rm -f database/database.sqlite* && echo > database/database.sqlite'
+        . ' && docker compose exec -T laravel php artisan migrate:fresh --seed --no-interaction @additional_args'
+        . '; status=$?; docker compose exec -T laravel php artisan octane:reload >/dev/null 2>&1'
+        . '; [ -z "$workers" ] || docker compose start $workers || echo "Start them again: docker compose start $workers" >&2'
+        . '; exit $status';
+
     private const RUN_PHP = 'docker compose exec laravel php artisan test $p --exclude-testsuite=Browser @additional_args';
 
     private IOInterface $io;
@@ -59,7 +72,8 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
                 'docker compose exec laravel /bin/sh'
             ],
             'migrate:fresh' => [
-                'rm -f database/database.sqlite* && echo > database/database.sqlite && docker compose exec laravel php artisan migrate:fresh --seed'
+                'Composer\\Config::disableProcessTimeout',
+                self::MIGRATE_FRESH,
             ],
             'install:docker' => [
                 'docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/app composer:2 install --no-interaction --ignore-platform-reqs --working-dir=/app'
