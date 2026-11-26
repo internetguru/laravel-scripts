@@ -4,3 +4,9 @@ includes:
     # Carbon macros, such as laravel-common's toDisplayTimezone(), resolved from the booted application
     - ../../../nesbot/carbon/extension.neon
     - rules.neon
+
+parameters:
+    # Model columns come from the package migrations too, which applications run from vendor instead of copying
+    databaseMigrationsPath:
+        - %currentWorkingDirectory%/database/migrations
+        - %currentWorkingDirectory%/vendor/internetguru/*/database/migrations
