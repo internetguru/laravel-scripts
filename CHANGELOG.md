@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.12.0] - 2026-11-26
+
+_Stable release based on [1.12.0-rc.1]._
+
+## [1.12.0-rc.1] - 2026-11-26
+
+### Fixed
+
+- `composer run migrate:fresh` stops the queue and the scheduler while it recreates the SQLite database, which they corrupted by writing to it, reloads Octane's workers onto the new file, says so when the two do not start again, and runs without a terminal, so an agent can use it; extra arguments go to `migrate:fresh`.
+
 ## [1.11.0] - 2026-11-23
 
 _Stable release based on [1.11.0-rc.1]._
@@ -361,6 +371,8 @@ _Stable release based on [0.1.0-rc.1]._
 
 - New changelog file.
 
+[1.12.0]: https://github.com/internetguru/laravel-scripts/compare/v1.11.0...v1.12.0
+[1.12.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.11.0
 [1.11.0]: https://github.com/internetguru/laravel-scripts/compare/v1.10.0...v1.11.0
 [1.11.0-rc.1]: https://github.com/internetguru/laravel-scripts/releases/tag/v1.10.0
 [1.10.0]: https://github.com/internetguru/laravel-scripts/compare/v1.9.0...v1.10.0

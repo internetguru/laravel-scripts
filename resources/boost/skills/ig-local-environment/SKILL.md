@@ -24,7 +24,7 @@ The application runs in Docker. docker-ansible deploys it locally to the `<group
 | `composer run artisan <command>` | `php artisan <command>` in the container |
 | `composer run test:php` | The PHP tests without the `Browser` suite: recreate and migrate `database/testing.sqlite`, then `php artisan test`, in parallel (one process per CPU) when Paratest is installed. Extra arguments go after `--`, e.g. `composer run test:php -- --compact` |
 | `composer run test:all` | The full suite: `test:php`, then the `Browser` suite, because Chromium starves next to busy CPU-bound tests, in at most four processes, because more Chromiums at once stop answering. Extra arguments go to both runs |
-| `composer run migrate:fresh` | Recreate `database/database.sqlite`, then `migrate:fresh --seed` |
+| `composer run migrate:fresh` | Stop the queue and the scheduler, recreate `database/database.sqlite`, run `migrate:fresh --seed`, then reload Octane's workers and start the two again |
 | `composer run bash` | Shell in the container |
 | `composer run dev` | `npm install` and the Vite dev server, run by the developer |
 | `composer run install:docker` | `composer install` in a temporary Docker container, for a machine without matching PHP |
