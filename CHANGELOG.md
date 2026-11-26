@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The shared PHPStan rules read model columns from the `internetguru/*` package migrations as well, so an application no longer needs copies of them for Larastan.
+
 ## [1.12.0] - 2026-11-26
 
 _Stable release based on [1.12.0-rc.1]._
