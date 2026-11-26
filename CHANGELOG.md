@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- `composer run migrate:fresh` stops the queue and the scheduler while it recreates the SQLite database, which they corrupted by writing to it, reloads Octane's workers onto the new file, and runs without a terminal, so an agent can use it.
+- `composer run migrate:fresh` stops the queue and the scheduler while it recreates the SQLite database, which they corrupted by writing to it, reloads Octane's workers onto the new file, says so when the two do not start again, and runs without a terminal, so an agent can use it; extra arguments go to `migrate:fresh`.
 
 ## [1.11.0] - 2026-11-23
 

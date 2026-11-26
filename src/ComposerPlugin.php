@@ -50,11 +50,13 @@ class ComposerPlugin implements Capable, EventSubscriberInterface, PluginInterfa
      * they stop for the while; Octane's workers held the deleted file and reload onto the new one (the container keeps
      * running, with the Vite dev server in it). Without a TTY (`-T`), so an agent or a CI job can run it too.
      */
-    private const MIGRATE_FRESH = '(docker compose stop queue scheduler 2>/dev/null || true)'
+    private const MIGRATE_FRESH = 'workers=$(docker compose config --services 2>/dev/null | grep -xE "queue|scheduler" | tr "\\n" " ")'
+        . '; { [ -z "$workers" ] || docker compose stop $workers; }'
         . ' && rm -f database/database.sqlite* && echo > database/database.sqlite'
-        . ' && docker compose exec -T laravel php artisan migrate:fresh --seed --no-interaction'
-        . '; status=$?; (docker compose exec -T laravel php artisan octane:reload >/dev/null 2>&1 || true)'
-        . '; (docker compose start queue scheduler 2>/dev/null || true); exit $status';
+        . ' && docker compose exec -T laravel php artisan migrate:fresh --seed --no-interaction @additional_args'
+        . '; status=$?; docker compose exec -T laravel php artisan octane:reload >/dev/null 2>&1'
+        . '; [ -z "$workers" ] || docker compose start $workers || echo "Start them again: docker compose start $workers" >&2'
+        . '; exit $status';
 
     private const RUN_PHP = 'docker compose exec laravel php artisan test $p --exclude-testsuite=Browser @additional_args';
 
